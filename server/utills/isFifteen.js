@@ -1,9 +1,9 @@
-const isFifteen = (value) => {
+const isFifteen = (birthday) => {
   let valid = true;
   const rightNow = new Date();
-  const yearDiff = rightNow.getFullYear() - value.getFullYear();
-  const monthDiff = rightNow.getMonth() - value.getMonth();
-  const dayDiff = rightNow.getDate() - value.getDate();
+  const yearDiff = rightNow.getFullYear() - birthday.getFullYear();
+  const monthDiff = rightNow.getMonth() - birthday.getMonth();
+  const dayDiff = rightNow.getDate() - birthday.getDate();
   // Checking full years
   if (yearDiff < 15) {
     valid = false;
