@@ -1,3 +1,5 @@
+const httpStatus = require("http-status");
+const { ApiError } = require("../middleware/apiError");
 const { User } = require("../models/user");
 
 const createUser = async (
@@ -10,8 +12,7 @@ const createUser = async (
 ) => {
   try {
     if (await User.emailTaken(email)) {
-      console.log("EMAIL already on the DB");
-      /// throw error;
+      throw new ApiError(httpStatus.BAD_REQUEST, "Sorry email taken");
     }
     console.log(birthday);
     const user = new User({

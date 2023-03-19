@@ -1,3 +1,4 @@
+const httpStatus = require("http-status");
 const { authService } = require("../services");
 
 const authController = {
@@ -16,9 +17,12 @@ const authController = {
       );
       const token = await authService.genAuthToken(user);
 
-      res.cookie("x-access-token", token).status(200).send({ user, token });
+      res.cookie("x-access-token", token).status(httpStatus.CREATED).send({
+        user,
+        token,
+      });
     } catch (error) {
-      console.log(error);
+      next(error);
     }
   },
   async signin(req, res, next) {
