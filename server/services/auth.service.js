@@ -37,7 +37,21 @@ const genAuthToken = (user) => {
   return token;
 };
 
+const signInWithEmailAndPassword = async (email, password) => {
+  try {
+    const user = await User.findOne({ email: email });
+    if (!user || !(await user.comparePassword(password))) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "Wrong email or password");
+    }
+
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   createUser,
   genAuthToken,
+  signInWithEmailAndPassword,
 };
