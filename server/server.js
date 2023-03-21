@@ -6,6 +6,8 @@ const xss = require("xss-clean");
 const mongoSanitize = require("express-mongo-sanitize");
 const routes = require("./routes");
 const { handleError, convertToApiError } = require("./middleware/apiError");
+const passport = require("passport");
+const { jwtStrategy } = require("./middleware/passport");
 
 const uri = `mongodb+srv://${process.env.ADMIN}:${process.env.ADMIN_PASS}@${process.env.CLUSTER}retryWrites=true&w=majority`;
 mongoose.connect(uri, {
@@ -19,6 +21,9 @@ app.use(express.json());
 //sanitize
 app.use(xss());
 app.use(mongoSanitize());
+
+app.use(passport.initialize());
+passport.use("jwt", jwtStrategy);
 
 app.use("/api", routes);
 
