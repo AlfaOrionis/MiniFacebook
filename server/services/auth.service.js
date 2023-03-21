@@ -1,6 +1,7 @@
 const httpStatus = require("http-status");
 const { ApiError } = require("../middleware/apiError");
 const { User } = require("../models/user");
+const validatePassword = require("../utills/validatePassword");
 
 const createUser = async (
   email,
@@ -14,7 +15,7 @@ const createUser = async (
     if (await User.emailTaken(email)) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Sorry email taken");
     }
-    console.log(birthday);
+    validatePassword(password);
     const user = new User({
       email,
       password,

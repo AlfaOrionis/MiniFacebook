@@ -1,4 +1,7 @@
+const httpStatus = require("http-status");
+const { ApiError } = require("../middleware/apiError");
 const { User } = require("../models/user");
+const validatePassword = require("../utills/validatePassword");
 
 const findUserByEmail = async (email) => {
   return await User.findOne({ email: email });
@@ -10,17 +13,12 @@ const findUserById = async (_id) => {
 
 const updateUserProfile = async (req) => {
   try {
-    console.log(req.body);
-
-    // for safety
-    delete req.body.password;
-    delete req.body.email;
-
     const user = await User.findOneAndUpdate(
       { _id: req.user._id },
       {
         $set: {
-          ...req.body,
+          firstname: req.body.firstname,
+          lastname: req.body.lastname,
         },
       },
       { new: true }
@@ -28,15 +26,67 @@ const updateUserProfile = async (req) => {
     if (!user) {
       throw new ApiError(httpStatus.NOT_FOUND, "User not found");
     }
-    console.log(user);
     return user;
   } catch (error) {
     throw error;
   }
 };
 
+const updateUserEmail = async (req) => {
+  try {
+    if (await User.emailTaken(req.body.newemail)) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Sorry email taken");
+    }
+
+    const user = await User.findOneAndUpdate(
+      { _id: req.user._id, email: req.user.email },
+      {
+        $set: {
+          email: req.body.newemail,
+          verified: false,
+        },
+      },
+      { new: true }
+    );
+    if (!user) {
+      throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    }
+    return user;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updatePassword = async (req) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    validatePassword(newPassword);
+
+    const match = await req.user.comparePassword(currentPassword);
+
+    if (!match) {
+      throw new ApiError(httpStatus.UNAUTHORIZED, "Wrong Password");
+    }
+
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    }
+
+    user.password = newPassword;
+
+    const updatedUser = await user.save();
+
+    return updatedUser;
+  } catch (err) {
+    throw err;
+  }
+};
 module.exports = {
   findUserByEmail,
   findUserById,
   updateUserProfile,
+  updateUserEmail,
+  updatePassword,
 };

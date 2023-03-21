@@ -8,4 +8,7 @@ router
   .get(auth(), usersController.getProfile)
   .patch(auth(), usersController.updateProfile);
 
+router.patch("/email", auth(), usersController.updateUserEmail);
+router.patch("/password", auth(), usersController.updatePassword);
+
 module.exports = router;
