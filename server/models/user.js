@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
 const validator = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -22,7 +23,6 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
     minLength: 6,
-    maxLength: 20,
     trim: true,
   },
   firstname: {
@@ -91,6 +91,20 @@ const userSchema = mongoose.Schema({
       "Widowed",
     ],
   },
+  friends: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
+    },
+  ],
+  friendsRequest: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: false,
+    },
+  ],
 });
 
 userSchema.pre("save", async function (next) {

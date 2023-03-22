@@ -10,5 +10,6 @@ router
 
 router.patch("/email", auth(), usersController.updateUserEmail);
 router.patch("/password", auth(), usersController.updatePassword);
+router.post("/sendFriendRequest", auth(), usersController.sendFriendRequest);
 
 module.exports = router;

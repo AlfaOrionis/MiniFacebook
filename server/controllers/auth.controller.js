@@ -18,7 +18,7 @@ const authController = {
       );
 
       const token = await authService.genAuthToken(user);
-      await sendEmail(email, user, token);
+      await sendEmail(email, user, token, "Register");
 
       res.cookie("x-access-token", token).status(httpStatus.CREATED).send({
         user,

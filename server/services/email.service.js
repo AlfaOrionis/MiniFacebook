@@ -11,7 +11,7 @@ let transporter = nodemailer.createTransport({
   },
 });
 
-const sendEmail = async (userEmail, user, token) => {
+const sendEmail = async (userEmail, user, token, emailType) => {
   let mailGenerator = new Mailgen({
     theme: "default",
     product: {
@@ -38,7 +38,28 @@ const sendEmail = async (userEmail, user, token) => {
     },
   };
 
-  const emailBody = mailGenerator.generate(TheRegisterEmail);
+  const TheResetPasswordEmail = {
+    body: {
+      name: name,
+      intro:
+        "You have received this email because a password reset request for your account was received.",
+      action: {
+        instructions: "Please click this link to verify your password ",
+        button: {
+          color: "rgb(200, 0, 0)",
+          text: "Reset password",
+          link: `${process.env.VERIFY_SITE}/reset-password?t=${token}`,
+        },
+      },
+      outro:
+        "Need help, or have questions? Just reply to this email, we'd love to help.",
+    },
+  };
+  const emailToSend =
+    (emailType === "Register" && TheRegisterEmail) ||
+    (emailType === "ResetPassword" && TheResetPasswordEmail);
+
+  const emailBody = mailGenerator.generate(emailToSend);
 
   let message = {
     from: '"MiniFacebook 🏍️" <minifacebook@gmail.com>',

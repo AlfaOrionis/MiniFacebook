@@ -88,10 +88,39 @@ const updatePassword = async (req) => {
     throw err;
   }
 };
+
+const sendFriendRequest = async (req) => {
+  const user = req.user;
+  try {
+    const friend = await User.findOne({ _id: req.body.id });
+    if (!friend) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    for (const id in user.friendsRequest) {
+      if (user.friendsRequest[id].toString() === req.body.id)
+        throw new ApiError(
+          httpStatus.BAD_REQUEST,
+          "You already sent friend request to this user"
+        );
+    }
+    for (const id in user.friends) {
+      if (user.friends[id].toString() === req.body.id)
+        throw new ApiError(
+          httpStatus.BAD_REQUEST,
+          "This user is already your friend"
+        );
+    }
+
+    user.friendsRequest.push(friend._id);
+    await user.save();
+    return user;
+  } catch (err) {
+    throw err;
+  }
+};
 module.exports = {
   findUserByEmail,
   findUserById,
   updateUserProfile,
   updateUserEmail,
   updatePassword,
+  sendFriendRequest,
 };

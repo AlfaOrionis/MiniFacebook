@@ -1,7 +1,10 @@
 const { userService, authService } = require("../services");
 const httpStatus = require("http-status");
+const mongoose = require("mongoose");
 const { ApiError } = require("../middleware/apiError");
 const filterUser = require("../utills/filterUserResponse");
+const { User } = require("../models/user");
+const { sendFriendRequest } = require("../services/user.service");
 
 const usersController = {
   async getProfile(req, res, next) {
@@ -42,6 +45,16 @@ const usersController = {
   async updatePassword(req, res, next) {
     try {
       const user = await userService.updatePassword(req);
+
+      res.status(httpStatus.CREATED).send(filterUser(user));
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async sendFriendRequest(req, res, next) {
+    try {
+      const user = await sendFriendRequest(req);
 
       res.status(httpStatus.CREATED).send(filterUser(user));
     } catch (err) {
