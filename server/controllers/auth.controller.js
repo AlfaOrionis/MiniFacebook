@@ -1,5 +1,6 @@
 const httpStatus = require("http-status");
 const { authService } = require("../services");
+const sendEmail = require("../services/email.service");
 
 const authController = {
   async register(req, res, next) {
@@ -15,7 +16,9 @@ const authController = {
         birthday,
         gender
       );
+
       const token = await authService.genAuthToken(user);
+      await sendEmail(email, user, token);
 
       res.cookie("x-access-token", token).status(httpStatus.CREATED).send({
         user,

@@ -2,6 +2,7 @@ const httpStatus = require("http-status");
 const { ApiError } = require("../middleware/apiError");
 const { User } = require("../models/user");
 const validatePassword = require("../utills/validatePassword");
+const validateEmail = require("../utills/validateEmail");
 
 const findUserByEmail = async (email) => {
   return await User.findOne({ email: email });
@@ -33,16 +34,20 @@ const updateUserProfile = async (req) => {
 };
 
 const updateUserEmail = async (req) => {
+  const { newEmail } = req.body;
+
   try {
-    if (await User.emailTaken(req.body.newemail)) {
+    if (await User.emailTaken(newEmail)) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Sorry email taken");
     }
+
+    validateEmail(newEmail);
 
     const user = await User.findOneAndUpdate(
       { _id: req.user._id, email: req.user.email },
       {
         $set: {
-          email: req.body.newemail,
+          email: newEmail,
           verified: false,
         },
       },

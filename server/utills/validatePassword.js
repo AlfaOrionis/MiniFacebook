@@ -9,7 +9,7 @@ const validatePassword = (password) => {
       "Password must be atleast 6 characters"
     );
   }
-  if (regex.test(password)) {
+  if (!regex.test(password)) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
       "Password must not contain empty spaces"
