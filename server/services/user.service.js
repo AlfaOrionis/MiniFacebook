@@ -110,6 +110,8 @@ const sendFriendRequest = async (req) => {
     }
 
     user.friendsRequest.push(friend._id);
+    friend.friendsRequest.push(user.id);
+    await friend.save();
     await user.save();
     return user;
   } catch (err) {
