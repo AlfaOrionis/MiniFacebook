@@ -51,6 +51,22 @@ const usersController = {
       next(err);
     }
   },
+  async verifyAccount(req, res, next) {
+    try {
+      const token = await userService.validateToken(req.query.validation);
+      const user = await userService.findUserById(token.sub);
+
+      if (!user) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+      if (user.verified)
+        throw new ApiError(httpStatus.BAD_REQUEST, "Already verified");
+
+      user.verified = true;
+      await user.save();
+      res.status(httpStatus.CREATED).send(filterUser(user));
+    } catch (error) {
+      next(error);
+    }
+  },
 
   async sendFriendRequest(req, res, next) {
     try {

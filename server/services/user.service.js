@@ -1,4 +1,5 @@
 const httpStatus = require("http-status");
+const jwt = require("jsonwebtoken");
 const { ApiError } = require("../middleware/apiError");
 const { User } = require("../models/user");
 const validatePassword = require("../utills/validatePassword");
@@ -10,6 +11,9 @@ const findUserByEmail = async (email) => {
 
 const findUserById = async (_id) => {
   return await User.findById(_id);
+};
+const validateToken = async (token) => {
+  return jwt.verify(token, process.env.DB_SECRET);
 };
 
 const updateUserProfile = async (req) => {
@@ -125,4 +129,5 @@ module.exports = {
   updateUserEmail,
   updatePassword,
   sendFriendRequest,
+  validateToken,
 };
