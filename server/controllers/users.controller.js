@@ -19,6 +19,19 @@ const usersController = {
     }
   },
 
+  async getUsers(req, res, next) {
+    const input = new RegExp(req.query.input, "i");
+    try {
+      const users = await User.find({
+        $or: [{ firstname: input }, { lastname: input }],
+      }).limit(req.query.limit);
+
+      res.json(users);
+    } catch (err) {
+      next(err);
+    }
+  },
+
   async updateProfile(req, res, next) {
     try {
       const user = await userService.updateUserProfile(req);
@@ -28,6 +41,16 @@ const usersController = {
       next(error);
     }
   },
+  async updateWorkAndSchool(req, res, next) {
+    try {
+      const user = await userService.workAndSchool(req);
+
+      res.json(filterUser(user));
+    } catch (error) {
+      next(error);
+    }
+  },
+
   async updateUserEmail(req, res, next) {
     try {
       const user = await userService.updateUserEmail(req);

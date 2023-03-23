@@ -37,6 +37,13 @@ const updateUserProfile = async (req) => {
   }
 };
 
+const workAndSchool = async () => {
+  try {
+  } catch (err) {
+    throw err;
+  }
+};
+
 const updateUserEmail = async (req) => {
   const { newEmail } = req.body;
 
@@ -130,4 +137,5 @@ module.exports = {
   updatePassword,
   sendFriendRequest,
   validateToken,
+  workAndSchool,
 };
