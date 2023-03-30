@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
-import Footer from "./pages/footer/Footer";
+import Footer from "./components/footer/Footer";
 import Login from "./pages/login";
 
 const App = () => {
