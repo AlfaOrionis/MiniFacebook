@@ -4,3 +4,8 @@
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.bootstrap-reset {
+  padding-left: 0;
+  margin-bottom: 0;
+}

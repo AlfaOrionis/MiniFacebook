@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <div className={styles.footer}>
       <div className={styles.container}>
-        <ul className={styles.footer__langUl}>
+        <ul className={`${styles.container__langUl} bootstrap-reset`}>
           <li>
             <a href="">English (UK)</a>
           </li>
@@ -39,7 +39,7 @@ const Footer = () => {
             <a href="">العربية</a>
           </li>
         </ul>
-        <ul className={styles.footer__linksUl}>
+        <ul className={`${styles.container__linksUl} bootstrap-reset`}>
           <li>
             <a href="" title="">
               Sign Up
@@ -182,7 +182,7 @@ const Footer = () => {
           </li>
         </ul>
 
-        <div className={styles.copyright}>
+        <div className={styles.container__copyright}>
           <span>Meta © 2023</span>
         </div>
       </div>

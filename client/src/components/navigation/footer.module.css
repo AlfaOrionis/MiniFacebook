@@ -1,5 +1,5 @@
 .footer {
-margin: 0 40px;
+margin: 30px 40px 0px 40px;
 color: #8a8d91;
 font-size: 12px;
 
@@ -8,6 +8,7 @@ font-size: 12px;
     margin: 0 auto ;
     max-width: 995px;
 }
+
 
 .footer ul {
     display: flex;
@@ -24,23 +25,23 @@ font-size: 12px;
 .footer ul a:hover {
     text-decoration: underline;
 }
-.footer__langUl {
+.container__langUl {
     padding-bottom: 10px;
     margin-bottom: 10px;
     border-bottom: 1px solid rgb(185, 185, 185);
  
 }
 
-.footer__langUl li {
+.container__langUl li {
     padding-right: 10px;
 }
 
-.footer__linksUl li {
+.container__linksUl li {
   padding: 0 20px 5px 0
   
 }
 
-.copyright {
+.container__copyright {
     margin: 20px 0;
     font-size: 12px;
 }
