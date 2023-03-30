@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./App.css";
-import Login from "./components/login";
-import Footer from "./components/navigation/Footer";
+import Footer from "./pages/footer/Footer";
+import Login from "./pages/login";
 
 const App = () => {
   return (
