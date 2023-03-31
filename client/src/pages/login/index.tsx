@@ -20,9 +20,8 @@ const Login = () => {
           </p>
         </div>
         <div className={styles.container__right}>
-          <div className={styles.right__container}></div>
+          <LoginForm />
         </div>
-        <LoginForm />
       </div>
     </div>
   );

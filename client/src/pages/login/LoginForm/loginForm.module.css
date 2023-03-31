@@ -6,7 +6,7 @@
 }
 
 .LoginForm {
-    width: 400px;
+    width: 100%;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
@@ -37,12 +37,14 @@
 
 .LoginForm__newAccBtn {text-align: center;
 margin: 30px 0 10px 0;}
+
 .LoginForm__newAccBtn button {
     width: 50%;
-    line-height: 48px;
-    padding: 0;
+    padding: 10px 5px;
     font-size: 17px;
 background-color: rgb(66, 183, 42);
 border: none;
 font-weight: bold;
 }
+
+
