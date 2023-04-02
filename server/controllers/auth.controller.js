@@ -1,7 +1,7 @@
 const httpStatus = require("http-status");
 const { authService } = require("../services");
 const sendEmail = require("../services/email.service");
-
+const filterUser = require("../utills/filterUserResponse");
 const authController = {
   async register(req, res, next) {
     try {
@@ -20,10 +20,13 @@ const authController = {
       const token = await authService.genAuthToken(user);
       await sendEmail(email, user, token, "Register");
 
-      res.cookie("x-access-token", token).status(httpStatus.CREATED).send({
-        user,
-        token,
-      });
+      res
+        .cookie("x-access-token", token)
+        .status(httpStatus.CREATED)
+        .send({
+          user: filterUser(user),
+          token,
+        });
     } catch (error) {
       next(error);
     }
@@ -37,7 +40,9 @@ const authController = {
       );
       const token = await authService.genAuthToken(user);
 
-      res.cookie("x-access-token", token).send({ user, token });
+      res
+        .cookie("x-access-token", token)
+        .send({ user: filterUser(user), token });
     } catch (error) {
       next(error);
     }

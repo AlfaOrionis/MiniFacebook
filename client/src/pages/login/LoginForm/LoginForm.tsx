@@ -2,8 +2,11 @@ import { Form, Button } from "react-bootstrap";
 import styles from "./loginForm.module.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { logIn } from "../../../store/actions/auth-actions";
+import { useAppDispatch } from "../../../store";
 
 const LoginForm = () => {
+  const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: { email: "", password: "" },
     validationSchema: Yup.object({
@@ -13,7 +16,7 @@ const LoginForm = () => {
       password: Yup.string().required("Please enter your password"),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      dispatch(logIn(values));
     },
   });
 
