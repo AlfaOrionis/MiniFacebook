@@ -9,7 +9,7 @@ interface userRegisterProps {
   firstname: string;
   lastname: string;
   birthday: string;
-  gender: "male" | "female";
+  gender: string;
 }
 
 interface userResponse {
@@ -38,10 +38,10 @@ export const userRegister = (values: userRegisterProps) => {
         {
           email: values.email,
           password: values.password,
-          firstname: "Kola",
-          lastname: "Banda",
-          birthday: "2007-03-22",
-          gender: "male",
+          firstname: values.firstname,
+          lastname: values.lastname,
+          birthday: values.birthday,
+          gender: values.gender,
         }
       );
 
@@ -52,6 +52,7 @@ export const userRegister = (values: userRegisterProps) => {
         })
       );
     } catch (err) {
+      console.log(err);
       if (axios.isAxiosError(err)) {
         dispatch(
           notificationActions.showNotification({

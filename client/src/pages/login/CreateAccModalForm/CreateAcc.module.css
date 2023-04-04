@@ -10,13 +10,16 @@
   display: flex;
   justify-content: space-between;
 }
+.namesContainer div {
+  flex-grow: 1;
+}
 
 .namesContainer div:nth-child(1) {
   margin-right: 10px !important;
 }
 
 .dateContainer > select {
-  width: 140px;
+  width: 150px;
 }
 .dateContainer > select:nth-child(2) {
   margin: 0 10px;
@@ -24,6 +27,7 @@
 .dateContainer {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 0.2rem;
 }
 
 .formDescription {
@@ -51,7 +55,6 @@
 .genderContainer {
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem;
 }
 .genderContainer > div {
   display: flex;
@@ -60,8 +63,11 @@
   border: 1px solid rgb(194, 194, 194);
   border-radius: 4px;
   padding: 5px 10px;
-  width: 140px;
+  width: 150px;
   display: flex;
+}
+.invalidBorder {
+  border-color: #dc3545 !important;
 }
 .genderContainer > div:nth-child(2) {
   margin: 0 10px;
@@ -72,4 +78,15 @@
 .genderContainer > div input {
   border-radius: 100px !important;
   cursor: pointer;
+}
+
+.label {
+  font-size: 12px;
+  color: rgb(61, 61, 61);
+}
+
+.genderInvalid {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 4px;
 }

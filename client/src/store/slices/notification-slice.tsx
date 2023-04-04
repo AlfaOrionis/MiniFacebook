@@ -6,7 +6,7 @@ interface notificationState {
   message: string;
 }
 
-const notificationState: notificationState = {
+const notifInitialState: notificationState = {
   status: null,
   title: "",
   message: "",
@@ -14,7 +14,7 @@ const notificationState: notificationState = {
 
 const notificationSlice = createSlice({
   name: "notification",
-  initialState: notificationState,
+  initialState: notifInitialState,
   reducers: {
     showNotification(state, action: { payload: notificationState }) {
       state = {
@@ -23,6 +23,9 @@ const notificationSlice = createSlice({
         message: action.payload.message,
       };
       return state;
+    },
+    notifClear(state, action) {
+      state = notifInitialState;
     },
   },
 });
