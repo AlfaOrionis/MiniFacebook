@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { AppDispatch } from "../index";
 
 import { authActions } from "../slices/auth-slice";
@@ -9,10 +9,23 @@ interface userRegisterProps {
   firstname: string;
   lastname: string;
   birthday: string;
-  gender: string;
+  gender: "male" | "female";
 }
 
-interface logIn {
+interface userResponse {
+  user: {
+    email: string;
+    firstname: string;
+    lastname: string;
+    birthday: string;
+    gender: "male" | "female";
+    verified: boolean;
+    friends: string[];
+    friendsRequest: string[];
+  };
+}
+
+interface logInProps {
   email: string;
   password: string;
 }
@@ -20,14 +33,17 @@ interface logIn {
 export const userRegister = (values: userRegisterProps) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await axios.post("/api/auth/register", {
-        email: values.email,
-        password: values.password,
-        firstname: "Kola",
-        lastname: "Banda",
-        birthday: "2007-03-22",
-        gender: "male",
-      });
+      const response: AxiosResponse<userResponse> = await axios.post(
+        "/api/auth/register",
+        {
+          email: values.email,
+          password: values.password,
+          firstname: "Kola",
+          lastname: "Banda",
+          birthday: "2007-03-22",
+          gender: "male",
+        }
+      );
 
       dispatch(
         authActions.userAuthenticate({
@@ -37,7 +53,6 @@ export const userRegister = (values: userRegisterProps) => {
       );
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        console.log(err.response!.data.message);
         dispatch(
           notificationActions.showNotification({
             status: "error",
@@ -50,14 +65,16 @@ export const userRegister = (values: userRegisterProps) => {
   };
 };
 
-export const logIn = (values: logIn) => {
+export const logIn = (values: logInProps) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response = await axios.post("/api/auth/signin", {
-        email: values.email,
-        password: values.password,
-      });
-      console.log(response.data.user);
+      const response: AxiosResponse<userResponse> = await axios.post(
+        "/api/auth/signin",
+        {
+          email: values.email,
+          password: values.password,
+        }
+      );
       dispatch(
         authActions.userAuthenticate({
           isAuth: true,
@@ -65,7 +82,6 @@ export const logIn = (values: logIn) => {
         })
       );
     } catch (err) {
-      console.log(err);
       if (axios.isAxiosError(err)) {
         console.log(err.response!.data.message);
         dispatch(

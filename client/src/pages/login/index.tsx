@@ -1,7 +1,18 @@
+import { useState } from "react";
+import CreateAccModalForm from "./CreateAccModalForm/CreateAccModalForm";
 import styles from "./login.module.css";
 import LoginForm from "./LoginForm/LoginForm";
 
 const Login = () => {
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
   return (
     <div className={styles.login}>
       <div className={styles.container}>
@@ -20,9 +31,10 @@ const Login = () => {
           </p>
         </div>
         <div className={styles.container__right}>
-          <LoginForm />
+          <LoginForm onhandleOpenModal={handleOpenModal} />
         </div>
       </div>
+      <CreateAccModalForm onClose={handleCloseModal} show={showModal} />
     </div>
   );
 };

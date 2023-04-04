@@ -5,7 +5,15 @@ import * as Yup from "yup";
 import { logIn } from "../../../store/actions/auth-actions";
 import { useAppDispatch } from "../../../store";
 
-const LoginForm = () => {
+interface LoginFormProps {
+  onhandleOpenModal: () => void;
+}
+
+const LoginForm: React.FC<LoginFormProps> = (props) => {
+  const openModalHander = () => {
+    props.onhandleOpenModal();
+  };
+
   const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: { email: "", password: "" },
@@ -62,7 +70,7 @@ const LoginForm = () => {
             <button type="button">Forgotten password?</button>
           </div>
           <div className={styles.LoginForm__newAccBtn}>
-            <Button>Create new Account</Button>
+            <Button onClick={openModalHander}>Create new Account</Button>
           </div>
         </Form>
       </div>
