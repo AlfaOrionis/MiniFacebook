@@ -51,13 +51,18 @@ export const userRegister = (values: userRegisterProps) => {
           data: response.data.user,
         })
       );
+      dispatch(
+        notificationActions.showNotification({
+          status: "success",
+          message: "Check your email to verify account!",
+        })
+      );
     } catch (err) {
       console.log(err);
       if (axios.isAxiosError(err)) {
         dispatch(
           notificationActions.showNotification({
             status: "error",
-            title: "Register error",
             message: err.response!.data.message || "Something went wrong",
           })
         );
@@ -88,7 +93,6 @@ export const logIn = (values: logInProps) => {
         dispatch(
           notificationActions.showNotification({
             status: "error",
-            title: "SignIn error",
             message: err.response!.data.message || "Something went wrong",
           })
         );

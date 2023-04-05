@@ -2,6 +2,7 @@ const httpStatus = require("http-status");
 const { authService } = require("../services");
 const sendEmail = require("../services/email.service");
 const filterUser = require("../utills/filterUserResponse");
+const { ApiError } = require("../middleware/apiError");
 const authController = {
   async register(req, res, next) {
     try {

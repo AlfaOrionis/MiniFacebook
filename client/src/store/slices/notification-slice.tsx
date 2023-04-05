@@ -2,13 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface notificationState {
   status: "error" | "success" | null;
-  title: string;
   message: string;
 }
 
 const notifInitialState: notificationState = {
   status: null,
-  title: "",
   message: "",
 };
 
@@ -19,13 +17,12 @@ const notificationSlice = createSlice({
     showNotification(state, action: { payload: notificationState }) {
       state = {
         status: action.payload.status,
-        title: action.payload.title,
         message: action.payload.message,
       };
       return state;
     },
-    notifClear(state, action) {
-      state = notifInitialState;
+    notifClear() {
+      return notifInitialState;
     },
   },
 });

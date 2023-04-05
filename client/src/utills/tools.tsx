@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export const getCurrentDate = () => {
   const date = new Date();
   const month = date.toLocaleString("en-US", { month: "short" });
@@ -43,4 +45,19 @@ export const getYearsList = () => {
 
 export const getDaysList = () => {
   return Array.from({ length: 31 }, (_, i) => i + 1);
+};
+
+export const showToast = (type: "SUCCESS" | "ERROR", msg: string) => {
+  switch (type) {
+    case "SUCCESS":
+      toast.success(msg, { pauseOnHover: false });
+
+      break;
+    case "ERROR":
+      toast.error(msg, { pauseOnHover: false });
+      break;
+
+    default:
+      return false;
+  }
 };

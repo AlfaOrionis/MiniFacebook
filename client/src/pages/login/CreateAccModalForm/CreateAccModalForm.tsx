@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal, Form } from "react-bootstrap";
 import styles from "./CreateAcc.module.css";
 import * as Yup from "yup";
@@ -11,10 +11,9 @@ import { validation } from "./CreateAccValidation";
 import { getMonthList } from "../../../utills/tools";
 import { useFormik } from "formik";
 
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
 import { userRegister } from "../../../store/actions/auth-actions";
 import { Spinner } from "../../../utills/spinner";
-import MainLayout from "../../../hoc/mainLayout";
 
 interface CreateAccModalFormProps {
   onClose: () => void;
@@ -27,8 +26,21 @@ const CreateAccModalForm: React.FC<CreateAccModalFormProps> = (props) => {
   const currYear = getCurrentDate().year;
 
   const dispatch = useAppDispatch();
+  const notifications = useAppSelector((state) => state.notifications);
 
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (notifications.status === "success") {
+      formik.resetForm();
+      props.onClose();
+      setIsLoading(false);
+    }
+
+    if (notifications.status === "error") {
+      setIsLoading(false);
+    }
+  }, [notifications]);
 
   const formik = useFormik({
     initialValues: {

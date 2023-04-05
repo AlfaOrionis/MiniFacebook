@@ -2,6 +2,7 @@ const httpStatus = require("http-status");
 const { ApiError } = require("../middleware/apiError");
 const { User } = require("../models/user");
 const validatePassword = require("../utills/validatePassword");
+const isFifteen = require("../utills/isFifteen");
 
 const createUser = async (
   email,
@@ -15,6 +16,14 @@ const createUser = async (
     if (await User.emailTaken(email)) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Sorry email taken");
     }
+    const birthdayDate = new Date(birthday);
+    const ageValid = isFifteen(birthdayDate);
+    if (!ageValid)
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        "You must be atleast 15 years old!"
+      );
+
     validatePassword(password);
     const user = new User({
       email,

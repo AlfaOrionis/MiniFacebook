@@ -46,9 +46,6 @@ const userSchema = mongoose.Schema({
       if (!validator.isDate(value)) {
         throw new Error("Birthday must be type of Date");
       }
-
-      const ageValid = isFifteen(value);
-      if (!ageValid) throw new Error("You must be atleast 15 years old!");
     },
   },
   gender: {
