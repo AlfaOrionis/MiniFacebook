@@ -87,6 +87,7 @@ export const logIn = (values: logInProps) => {
           data: response.data.user,
         })
       );
+      return true;
     } catch (err) {
       if (axios.isAxiosError(err)) {
         console.log(err.response!.data.message);

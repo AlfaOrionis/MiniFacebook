@@ -14,6 +14,7 @@ import { useFormik } from "formik";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { userRegister } from "../../../store/actions/auth-actions";
 import { Spinner } from "../../../utills/spinner";
+import { useNavigate } from "react-router-dom";
 
 interface CreateAccModalFormProps {
   onClose: () => void;
@@ -29,12 +30,11 @@ const CreateAccModalForm: React.FC<CreateAccModalFormProps> = (props) => {
   const notifications = useAppSelector((state) => state.notifications);
 
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (notifications.status === "success") {
-      formik.resetForm();
-      props.onClose();
-      setIsLoading(false);
+      navigate("/xd");
     }
 
     if (notifications.status === "error") {

@@ -3,13 +3,20 @@ import styles from "./loginForm.module.css";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { logIn } from "../../../store/actions/auth-actions";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { Spinner } from "../../../utills/spinner";
 
 interface LoginFormProps {
   onhandleOpenModal: () => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = (props) => {
+  const notifications = useAppSelector((state) => state.notifications);
+  const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(false);
   const openModalHander = () => {
     props.onhandleOpenModal();
   };
@@ -19,14 +26,25 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
     initialValues: { email: "", password: "" },
     validationSchema: Yup.object({
       email: Yup.string()
-        .required("Sorry the email is required")
+        .required("The email is required")
         .email("This is an invalid email"),
       password: Yup.string().required("Please enter your password"),
     }),
     onSubmit: (values) => {
-      dispatch(logIn(values));
+      setIsLoading(true);
+      dispatch(logIn(values)).then((res) => {
+        if (res) {
+          navigate("/home");
+        } else setIsLoading(false);
+      });
     },
   });
+
+  useEffect(() => {
+    if (notifications.status === "success") {
+      navigate("/home");
+    }
+  }, [notifications]);
 
   return (
     <div className={styles.wrapper}>
@@ -63,9 +81,13 @@ const LoginForm: React.FC<LoginFormProps> = (props) => {
             </Form.Control.Feedback>
           </Form.Group>
 
-          <Button size="lg" variant="primary" type="submit">
-            Log in
-          </Button>
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <Button size="lg" variant="primary" type="submit">
+              Log in
+            </Button>
+          )}
           <div className={styles.LoginForm__forgottenBtn}>
             <button type="button">Forgotten password?</button>
           </div>
