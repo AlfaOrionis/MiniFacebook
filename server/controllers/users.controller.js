@@ -20,15 +20,20 @@ const usersController = {
   },
 
   async getUsers(req, res, next) {
-    const input = new RegExp(req.query.input, "i");
-    try {
-      const users = await User.find({
-        $or: [{ firstname: input }, { lastname: input }],
-      }).limit(req.query.limit);
+    console.log(req.query);
+    let input = "";
+    if (!req.query.input.includes(" ")) {
+      input = new RegExp(req.query.input, "i");
+      console.log(input);
+      try {
+        const users = await User.find({
+          $or: [{ firstname: input }, { lastname: input }],
+        }).limit(req.query.limit);
 
-      res.json(users);
-    } catch (err) {
-      next(err);
+        res.json(users);
+      } catch (err) {
+        next(err);
+      }
     }
   },
 

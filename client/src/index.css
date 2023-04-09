@@ -47,3 +47,20 @@
 .hidden {
   display: none !important;
 }
+
+.searchPlaceholder {
+  position: absolute;
+  z-index: 123123123;
+  left: 60px;
+  top: 10px;
+  opacity: 0.8;
+  animation: slide 0.2s;
+  cursor: pointer;
+}
+
+@keyframes slide {
+  0% {
+    left: 43px;
+    opacity: 0;
+  }
+}

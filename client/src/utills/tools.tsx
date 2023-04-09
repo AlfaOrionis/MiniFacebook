@@ -61,3 +61,29 @@ export const showToast = (type: "SUCCESS" | "ERROR", msg: string) => {
       return false;
   }
 };
+
+export const boldTypedLetter = (input: string, result: string) => {
+  const resultArr = result.split("");
+  const boldedChars: string[] = [];
+  let index = result.toLowerCase().indexOf(input.toLocaleLowerCase());
+  let counter = 0;
+
+  return (
+    <span>
+      {resultArr.map((char, i) => {
+        if (i === index && counter < input.length) {
+          index += 1;
+          counter++;
+          boldedChars.push(char);
+          if (counter === input.length) {
+            return (
+              <span style={{ fontWeight: "lighter" }}>
+                {boldedChars.join("")}
+              </span>
+            );
+          }
+        } else return char;
+      })}
+    </span>
+  );
+};
