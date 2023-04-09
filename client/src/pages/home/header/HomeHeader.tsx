@@ -17,12 +17,14 @@ import { useAppDispatch } from "../../../store";
 import { notificationActions } from "../../../store/slices/notification-slice";
 import { boldTypedLetter } from "../../../utills/tools";
 import { Link } from "react-router-dom";
+import { Spinner } from "../../../utills/spinner";
 
 const HomeHeader = () => {
   const [inputValue, setInputValue] = useState("");
   const [users, setUsers] = useState([]);
   const [isFocused, setIsFocused] = useState(false);
-  const [searchFocused, setSearchFocused] = useState(true);
+  const [searchFocused, setSearchFocused] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const focusOnInput = () => {
@@ -33,10 +35,13 @@ const HomeHeader = () => {
   function handleFocus(bol: boolean) {
     setIsFocused(bol);
   }
-  console.log(inputValue);
+
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsLoading(true);
     setInputValue(e.target.value);
   };
+
+  console.log(isFocused);
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
@@ -52,6 +57,7 @@ const HomeHeader = () => {
           })
         );
     }
+    setIsLoading(false);
   };
   console.log(users);
 
@@ -69,7 +75,7 @@ const HomeHeader = () => {
   return (
     <div className={styles.HomeHeader}>
       <div className={styles.HomeHeader__left}>
-        {isFocused && users.length > 0 && (
+        {isFocused && (users.length > 0 || inputValue.trim().length > 0) && (
           <div
             onClick={() => {
               handleFocus(false);
@@ -93,43 +99,47 @@ const HomeHeader = () => {
             <SearchSVG onClick={focusOnInput} className="searchPlaceholder" />
           )}
 
-          {isFocused && users.length > 0 && (
+          {isFocused && (users.length > 0 || inputValue.trim().length > 0) && (
             <div
               onMouseLeave={() => {
                 setSearchFocused(false);
-                console.log("awdawd");
               }}
               onMouseEnter={() => {
                 setSearchFocused(true);
-                console.log("xXXXXXXXXXd");
               }}
               className={`${styles.HomeHeader__usersListContainer}`}
             >
-              <ul>
-                {users.map(
-                  (user: {
-                    firstname: string;
-                    lastname: string;
-                    _id: string;
-                  }) => {
-                    return (
-                      <li key={user._id}>
-                        <Link to="aawdawd">
-                          <div className={styles.SVGContainer}>
-                            <SearchSVG />
-                          </div>
-                          <p style={{ fontWeight: "bold" }}>
-                            {boldTypedLetter(
-                              inputValue,
-                              `${user.firstname} ${user.lastname}`
-                            )}
-                          </p>
-                        </Link>
-                      </li>
-                    );
-                  }
-                )}
-              </ul>
+              {users.length > 0 ? (
+                <ul>
+                  {users.map(
+                    (user: {
+                      firstname: string;
+                      lastname: string;
+                      _id: string;
+                    }) => {
+                      return (
+                        <li key={user._id}>
+                          <Link to={"/profile?_id=" + user._id}>
+                            <div className={styles.SVGContainer}>
+                              <SearchSVG />
+                            </div>
+                            <p style={{ fontWeight: "bold" }}>
+                              {boldTypedLetter(
+                                inputValue,
+                                `${user.firstname} ${user.lastname}`
+                              )}
+                            </p>
+                          </Link>
+                        </li>
+                      );
+                    }
+                  )}
+                </ul>
+              ) : (
+                <div className={styles.noUsersFound}>
+                  {isLoading ? <Spinner /> : <p>No users found.</p>}
+                </div>
+              )}
             </div>
           )}
         </div>

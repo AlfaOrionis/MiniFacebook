@@ -58,12 +58,12 @@
   position: absolute;
   width: 365px;
   z-index: 5;
-  overflow: auto;
   max-height: 500px;
   background-color: rgb(255, 255, 255);
   box-shadow: 5px 7px 5px 1px rgb(228, 228, 228);
   top: -5px;
   left: -15px;
+  border-radius: 5px;
 }
 .HomeHeader .backSVG {
   position: absolute;
@@ -151,6 +151,15 @@
   width: 42px;
   height: 42px;
   border-radius: 50px;
+}
+
+.noUsersFound {
+  text-align: center;
+  height: fit-content;
+  padding-top: 65px;
+}
+.noUsersFound p {
+  font-weight: bold;
 }
 
 @media (max-width: 768px) {
