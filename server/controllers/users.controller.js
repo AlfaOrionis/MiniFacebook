@@ -9,11 +9,11 @@ const { sendFriendRequest } = require("../services/user.service");
 const usersController = {
   async getProfile(req, res, next) {
     try {
-      const user = await userService.findUserById(req.user._id);
+      const user = await userService.findUserById(req.query._id);
       if (!user) {
         throw new ApiError(httpStatus.NOT_FOUND, "User not found");
       }
-      res.json({ ...user._doc, password: null });
+      res.json({ user: { ...user._doc, password: null } });
     } catch (error) {
       next(error);
     }

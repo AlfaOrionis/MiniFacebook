@@ -5,6 +5,7 @@ import Login from "./pages/login";
 import MainLayout from "./hoc/mainLayout";
 import Home from "./pages/home";
 import { useAppSelector } from "./store";
+import Profile from "./pages/profile/profile";
 
 const App = () => {
   const user = useAppSelector((state) => state.auth);
@@ -14,6 +15,7 @@ const App = () => {
       <MainLayout>
         <Routes>
           {user.isAuth && <Route path="/home" element={<Home />} />}
+          <Route path="/profile/:_id" element={<Profile />} />
           <Route path="*" element={<Login />} />
         </Routes>
       </MainLayout>

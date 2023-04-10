@@ -119,7 +119,7 @@ const HomeHeader = () => {
                     }) => {
                       return (
                         <li key={user._id}>
-                          <Link to={"/profile?_id=" + user._id}>
+                          <Link to={"/profile/" + user._id}>
                             <div className={styles.SVGContainer}>
                               <SearchSVG />
                             </div>

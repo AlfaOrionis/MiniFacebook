@@ -5,7 +5,7 @@ const auth = require("../middleware/auth");
 
 router
   .route("/profile")
-  .get(auth(), usersController.getProfile)
+  .get(usersController.getProfile)
   .patch(auth(), usersController.updateProfile);
 
 router.patch("/email", auth(), usersController.updateUserEmail);

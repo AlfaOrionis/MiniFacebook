@@ -3,6 +3,7 @@ import { AppDispatch } from "../index";
 
 import { authActions } from "../slices/auth-slice";
 import { notificationActions } from "../slices/notification-slice";
+import { User } from "../../types/types";
 interface userRegisterProps {
   email: string;
   password: string;
@@ -10,19 +11,6 @@ interface userRegisterProps {
   lastname: string;
   birthday: string;
   gender: string;
-}
-
-interface userResponse {
-  user: {
-    email: string;
-    firstname: string;
-    lastname: string;
-    birthday: string;
-    gender: "male" | "female";
-    verified: boolean;
-    friends: string[];
-    friendsRequest: string[];
-  };
 }
 
 interface logInProps {
@@ -33,7 +21,7 @@ interface logInProps {
 export const userRegister = (values: userRegisterProps) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response: AxiosResponse<userResponse> = await axios.post(
+      const response: AxiosResponse<User> = await axios.post(
         "/api/auth/register",
         {
           email: values.email,
@@ -74,7 +62,7 @@ export const userRegister = (values: userRegisterProps) => {
 export const logIn = (values: logInProps) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response: AxiosResponse<userResponse> = await axios.post(
+      const response: AxiosResponse<User> = await axios.post(
         "/api/auth/signin",
         {
           email: values.email,
