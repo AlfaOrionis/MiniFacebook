@@ -13,6 +13,10 @@ interface userRegisterProps {
   gender: string;
 }
 
+interface userResponse {
+  user: User;
+}
+
 interface logInProps {
   email: string;
   password: string;
@@ -21,7 +25,7 @@ interface logInProps {
 export const userRegister = (values: userRegisterProps) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response: AxiosResponse<User> = await axios.post(
+      const response: AxiosResponse<userResponse> = await axios.post(
         "/api/auth/register",
         {
           email: values.email,
@@ -62,7 +66,7 @@ export const userRegister = (values: userRegisterProps) => {
 export const logIn = (values: logInProps) => {
   return async (dispatch: AppDispatch) => {
     try {
-      const response: AxiosResponse<User> = await axios.post(
+      const response: AxiosResponse<userResponse> = await axios.post(
         "/api/auth/signin",
         {
           email: values.email,

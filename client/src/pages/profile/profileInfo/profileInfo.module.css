@@ -1,0 +1,38 @@
+.bottomContainer__left {
+  width: 100%;
+}
+
+.bottomContainer__description {
+  text-align: center;
+}
+.bottomContainer__description button {
+  color: black;
+  background-color: rgb(227, 227, 227);
+  width: 100%;
+  border: none;
+  font-family: Roboto;
+  font-weight: 500;
+}
+.bottomContainer__description button:hover {
+  background-color: rgb(201, 201, 201);
+  color: black;
+}
+.infoDiv {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.infoDiv p {
+  font-family: Roboto;
+  margin-bottom: 0;
+}
+.infoDiv p span {
+  font-family: Roboto;
+  font-weight: 500;
+}
+.infoDiv img {
+  height: 20px;
+  opacity: 0.6;
+  margin-right: 10px;
+}

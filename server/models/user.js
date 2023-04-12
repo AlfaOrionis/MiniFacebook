@@ -30,14 +30,14 @@ const userSchema = mongoose.Schema({
     maxLength: 100,
     minLength: 2,
     trim: true,
-    default: "",
+    required: true,
   },
   lastname: {
     type: String,
     maxLength: 100,
     minLength: 2,
     trim: true,
-    default: "",
+    required: true,
   },
   birthday: {
     type: Date,
@@ -60,6 +60,11 @@ const userSchema = mongoose.Schema({
   },
   work: { type: String, maxLength: 100 },
   education: {
+    type: String,
+    required: false,
+    maxLength: 100,
+  },
+  intro: {
     type: String,
     required: false,
     maxLength: 100,

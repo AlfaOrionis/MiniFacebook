@@ -18,16 +18,16 @@ const validateToken = async (token) => {
 
 const updateUserProfile = async (req) => {
   try {
-    const user = await User.findOneAndUpdate(
-      { _id: req.user._id },
-      {
-        $set: {
-          firstname: req.body.firstname,
-          lastname: req.body.lastname,
-        },
-      },
-      { new: true }
-    );
+    const user = await User.findById(req.user._id);
+
+    user.firstname = req.body.firstname || req.user.firstname;
+    user.lastname = req.body.lastname || req.user.lastname;
+    user.relationship = req.body.relationship || req.user.relationship;
+    user.education = req.body.education || req.user.education;
+    user.work = req.body.work || req.user.work;
+    user.currentTown = req.body.currentTown || req.user.currentTown;
+
+    await user.save();
     if (!user) {
       throw new ApiError(httpStatus.NOT_FOUND, "User not found");
     }

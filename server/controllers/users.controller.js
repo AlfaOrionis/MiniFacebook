@@ -1,9 +1,9 @@
 const { userService, authService } = require("../services");
 const httpStatus = require("http-status");
-const mongoose = require("mongoose");
 const { ApiError } = require("../middleware/apiError");
 const filterUser = require("../utills/filterUserResponse");
 const { User } = require("../models/user");
+const { ObjectId } = require("mongodb");
 const { sendFriendRequest } = require("../services/user.service");
 
 const usersController = {
@@ -13,7 +13,13 @@ const usersController = {
       if (!user) {
         throw new ApiError(httpStatus.NOT_FOUND, "User not found");
       }
-      res.json({ user: { ...user._doc, password: null } });
+
+      const result = {
+        ...user._doc,
+        joinedOn: new ObjectId(user._doc._id).getTimestamp().toDateString(),
+        password: "",
+      };
+      res.json(result);
     } catch (error) {
       next(error);
     }

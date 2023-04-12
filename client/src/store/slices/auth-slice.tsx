@@ -9,8 +9,8 @@ interface initialState {
     birthday: string;
     gender: "male" | "female" | "";
     verified: boolean;
-    friends: string[];
-    friendsRequest: string[];
+    friends?: string[];
+    friendsRequest?: string[];
   };
 }
 
