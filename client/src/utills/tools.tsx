@@ -1,4 +1,6 @@
 import { toast } from "react-toastify";
+import cookie from "react-cookies";
+export const getTokenCookie = () => cookie.load("x-access-token");
 
 export const getCurrentDate = () => {
   const date = new Date();

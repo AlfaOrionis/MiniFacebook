@@ -1,9 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 import { AppDispatch } from "../index";
 
-import { authActions } from "../slices/auth-slice";
+import { authActions, initialAuthState } from "../slices/auth-slice";
 import { notificationActions } from "../slices/notification-slice";
 import { User } from "../../types/types";
+import { getTokenCookie } from "../../utills/tools";
 interface userRegisterProps {
   email: string;
   password: string;
@@ -87,6 +88,36 @@ export const logIn = (values: logInProps) => {
           notificationActions.showNotification({
             status: "error",
             message: err.response!.data.message || "Something went wrong",
+          })
+        );
+      }
+    }
+  };
+};
+
+export const isAuth = () => {
+  return async (dispatch: AppDispatch) => {
+    try {
+      const response: AxiosResponse<User> = await axios.get(
+        "/api/auth/isauth",
+        {
+          headers: { Authorization: `Bearer ${getTokenCookie()}` },
+        }
+      );
+      console.log(response);
+      dispatch(
+        authActions.userAuthenticate({
+          isAuth: true,
+          data: response.data,
+        })
+      );
+      return true;
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        console.log(err.response!.data.message);
+        dispatch(
+          authActions.userAuthenticate({
+            ...initialAuthState,
           })
         );
       }

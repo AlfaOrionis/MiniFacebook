@@ -14,7 +14,7 @@ interface initialState {
   };
 }
 
-const initialAuthState: initialState = {
+export const initialAuthState: initialState = {
   isAuth: false,
   data: {
     email: "",

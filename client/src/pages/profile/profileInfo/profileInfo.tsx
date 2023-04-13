@@ -3,19 +3,33 @@ import classes from "../profile.module.css";
 import { Button } from "react-bootstrap";
 import { User } from "../../../types/types";
 import { profileInfos } from "../../../utills/data";
+import { useState } from "react";
+import EditBio from "./editBio";
 
-const ProfileInfo: React.FC<{ user: User }> = ({ user }) => {
+const ProfileInfo: React.FC<{
+  user: User;
+  setUserHandler: (data: User) => void;
+}> = ({ user, setUserHandler }) => {
+  const [isEditing, setIsEditing] = useState(false);
+
   return (
     <div className={styles.bottomContainer__left}>
       <div className={`${styles.bottomContainer__Intro} ${classes.card}`}>
+        <h2>Intro</h2>
         <div className={styles.bottomContainer__description}>
           <p>{user.intro || ""}</p>
-          <Button variant="secondary">Edit Bio</Button>
+          {isEditing ? (
+            <EditBio setUserHandler={setUserHandler} />
+          ) : (
+            <Button onClick={() => setIsEditing(true)} variant="secondary">
+              {user.intro ? "Edit Bio" : "Add Bio"}
+            </Button>
+          )}
         </div>
         {profileInfos(user).map((data) => {
           if (data.span !== "none")
             return (
-              <div className={styles.infoDiv}>
+              <div key={data.paragraph} className={styles.infoDiv}>
                 <img src={data.img} alt={data.paragraph} />
                 <p>
                   {data.paragraph} <span>{data.span}</span>

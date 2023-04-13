@@ -13,12 +13,16 @@ const Profile = () => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const setUserHandler = (data: User) => {
+    setUser(data);
+  };
+
   const params = useParams<{ _id: string }>();
   useEffect(() => {
     axios
       .get("/api/users/profile?_id=" + params._id)
       .then((res: AxiosResponse<User>) => {
-        setUser(res.data);
+        setUserHandler(res.data);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -91,7 +95,7 @@ const Profile = () => {
         </div>
         <div className={styles.bottomContainerWrapper}>
           <div className={styles.bottomContainer}>
-            <ProfileInfo user={user} />
+            <ProfileInfo setUserHandler={setUserHandler} user={user} />
             <div className={styles.bottomContainer__right}>
               <div className={styles.card}>
                 RIGHTRIGHTRIGHTRIGHTRIGHTRIGHTRIGHTRIGHT

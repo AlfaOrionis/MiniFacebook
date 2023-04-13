@@ -16,7 +16,7 @@ import axios from "axios";
 import { useAppDispatch } from "../../../store";
 import { notificationActions } from "../../../store/slices/notification-slice";
 import { boldTypedLetter } from "../../../utills/tools";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "../../../utills/spinner";
 
 const HomeHeader = () => {
@@ -31,7 +31,7 @@ const HomeHeader = () => {
     inputRef.current!.focus();
   };
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   function handleFocus(bol: boolean) {
     setIsFocused(bol);
   }
@@ -40,7 +40,6 @@ const HomeHeader = () => {
     setIsLoading(true);
     setInputValue(e.target.value);
   };
-
   console.log(isFocused);
   const fetchUsers = async () => {
     try {
@@ -86,7 +85,11 @@ const HomeHeader = () => {
           </div>
         )}
         <div className={styles.HomeHeader__searchInputContainer}>
-          <FbSVG />
+          <FbSVG
+            onClick={() => {
+              navigate("/home");
+            }}
+          />
           <input
             ref={inputRef}
             style={!isFocused ? { paddingLeft: "33px" } : { width: "250px" }}

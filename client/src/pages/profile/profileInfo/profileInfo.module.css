@@ -1,3 +1,9 @@
+.bottomContainer__Intro h2 {
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 24px;
+}
+
 .bottomContainer__left {
   width: 100%;
 }
@@ -7,7 +13,7 @@
 }
 .bottomContainer__description button {
   color: black;
-  background-color: rgb(227, 227, 227);
+  background-color: rgb(231, 231, 231);
   width: 100%;
   border: none;
   font-family: Roboto;
@@ -35,4 +41,30 @@
   height: 20px;
   opacity: 0.6;
   margin-right: 10px;
+}
+
+.editBio button {
+  width: fit-content;
+}
+.editBio button:disabled {
+  background-color: rgb(231, 231, 231);
+  color: black;
+  opacity: 0.5;
+}
+.editBio button:nth-of-type(1) {
+  margin-right: 5px;
+}
+
+.editBio__belowContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.editBio__belowContainer span {
+  font-family: Roboto;
+  font-size: 12px;
+  color: rgb(90, 90, 90);
+  margin: 3px 0;
+  letter-spacing: 0.1px;
 }

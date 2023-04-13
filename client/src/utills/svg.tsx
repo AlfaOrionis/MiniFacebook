@@ -48,9 +48,9 @@ export const MoreSVG = () => {
   );
 };
 
-export const FbSVG = () => {
+export const FbSVG: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   return (
-    <div className="fb-icon ">
+    <div style={{ cursor: "pointer" }} onClick={onClick} className="fb-icon ">
       <svg viewBox="0 0 36 36" className="facebook-icon" height="40" width="40">
         <defs>
           <linearGradient

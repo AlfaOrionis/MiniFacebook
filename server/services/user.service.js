@@ -26,6 +26,7 @@ const updateUserProfile = async (req) => {
     user.education = req.body.education || req.user.education;
     user.work = req.body.work || req.user.work;
     user.currentTown = req.body.currentTown || req.user.currentTown;
+    user.intro = req.body.intro || req.user.intro;
 
     await user.save();
     if (!user) {
