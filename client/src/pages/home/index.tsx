@@ -1,11 +1,7 @@
 import HomeHeader from "./header/HomeHeader";
 
 const Home = () => {
-  return (
-    <div>
-      <HomeHeader />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default Home;

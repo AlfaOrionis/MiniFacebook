@@ -19,10 +19,12 @@ import { boldTypedLetter } from "../../../utills/tools";
 import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "../../../utills/spinner";
 
-const HomeHeader = () => {
+const HomeHeader: React.FC<{
+  isFocused: boolean;
+  handleFocus: (val: boolean) => void;
+}> = ({ isFocused, handleFocus }) => {
   const [inputValue, setInputValue] = useState("");
   const [users, setUsers] = useState([]);
-  const [isFocused, setIsFocused] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -32,9 +34,6 @@ const HomeHeader = () => {
   };
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  function handleFocus(bol: boolean) {
-    setIsFocused(bol);
-  }
 
   const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsLoading(true);

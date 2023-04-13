@@ -13,7 +13,7 @@ import { Spinner } from "./utills/spinner";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
-
+  const [isFocused, setIsFocused] = useState(false);
   const user = useAppSelector((state) => state.auth);
   console.log(user.isAuth);
   const dispatch = useAppDispatch();
@@ -21,15 +21,24 @@ const App = () => {
   useEffect(() => {
     dispatch(isAuth()).then((res) => setIsLoading(false));
   }, []);
+
+  const handleFocus = (bol: boolean) => {
+    setIsFocused(bol);
+  };
   if (!isLoading) {
     return (
       <BrowserRouter>
-        {user.isAuth && <HomeHeader />}
+        {user.isAuth && (
+          <HomeHeader isFocused={isFocused} handleFocus={handleFocus} />
+        )}
         <MainLayout>
           <Routes>
             {user.isAuth && <Route path="/home" element={<Home />} />}
             {user.isAuth && (
-              <Route path="/profile/:_id" element={<Profile />} />
+              <Route
+                path="/profile/:_id"
+                element={<Profile handleFocus={handleFocus} />}
+              />
             )}
             {!user.isAuth && <Route path="*" element={<Login />} />}
           </Routes>

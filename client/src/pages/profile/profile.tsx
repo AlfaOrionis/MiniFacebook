@@ -9,7 +9,9 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import ProfileInfo from "./profileInfo/profileInfo";
 
-const Profile = () => {
+const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
+  handleFocus,
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -24,12 +26,14 @@ const Profile = () => {
       .then((res: AxiosResponse<User>) => {
         setUserHandler(res.data);
         setIsLoading(false);
+        handleFocus(false);
       })
       .catch((err) => {
         setIsLoading(false);
+        handleFocus(false);
         console.log(err);
       });
-  }, []);
+  }, [params._id]);
 
   if (user && !isLoading) {
     return (
