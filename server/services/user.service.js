@@ -12,37 +12,13 @@ const findUserByEmail = async (email) => {
 const findUserById = async (_id) => {
   return await User.findById(_id);
 };
+const findUserByIdWithError = async (_id) => {
+  const user = await User.findById(_id);
+  if (!user) throw new ApiError(httpStatus.BAD_REQUEST, "User not found");
+  return user;
+};
 const validateToken = async (token) => {
   return jwt.verify(token, process.env.DB_SECRET);
-};
-
-const updateUserProfile = async (req) => {
-  try {
-    const user = await User.findById(req.user._id);
-
-    user.firstname = req.body.firstname || req.user.firstname;
-    user.lastname = req.body.lastname || req.user.lastname;
-    user.relationship = req.body.relationship || req.user.relationship;
-    user.education = req.body.education || req.user.education;
-    user.work = req.body.work || req.user.work;
-    user.currentTown = req.body.currentTown || req.user.currentTown;
-    user.intro = req.body.intro || req.user.intro;
-
-    await user.save();
-    if (!user) {
-      throw new ApiError(httpStatus.NOT_FOUND, "User not found");
-    }
-    return user;
-  } catch (error) {
-    throw error;
-  }
-};
-
-const workAndSchool = async () => {
-  try {
-  } catch (err) {
-    throw err;
-  }
 };
 
 const updateUserEmail = async (req) => {
@@ -133,10 +109,9 @@ const sendFriendRequest = async (req) => {
 module.exports = {
   findUserByEmail,
   findUserById,
-  updateUserProfile,
   updateUserEmail,
   updatePassword,
   sendFriendRequest,
   validateToken,
-  workAndSchool,
+  findUserByIdWithError,
 };

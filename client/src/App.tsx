@@ -29,7 +29,11 @@ const App = () => {
     return (
       <BrowserRouter>
         {user.isAuth && (
-          <HomeHeader isFocused={isFocused} handleFocus={handleFocus} />
+          <HomeHeader
+            user_id={user.data._id || ""}
+            isFocused={isFocused}
+            handleFocus={handleFocus}
+          />
         )}
         <MainLayout>
           <Routes>

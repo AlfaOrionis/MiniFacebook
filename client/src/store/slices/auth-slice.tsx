@@ -11,6 +11,7 @@ interface initialState {
     verified: boolean;
     friends?: string[];
     friendsRequest?: string[];
+    _id?: string;
   };
 }
 

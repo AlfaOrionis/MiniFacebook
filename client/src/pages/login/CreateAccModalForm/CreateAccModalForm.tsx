@@ -34,7 +34,7 @@ const CreateAccModalForm: React.FC<CreateAccModalFormProps> = (props) => {
 
   useEffect(() => {
     if (notifications.status === "success") {
-      navigate("/xd");
+      navigate("/home");
     }
 
     if (notifications.status === "error") {
@@ -56,10 +56,11 @@ const CreateAccModalForm: React.FC<CreateAccModalFormProps> = (props) => {
     },
     validationSchema: validation,
     onSubmit: (values) => {
-      const birthdayString = new Date(
-        `${values.year}-${values.month}-${values.day}`
-      ).toLocaleDateString();
+      const birthdayString = `${values.year}-${values.month}-${values.day}`;
+
       values.birthday = birthdayString;
+      console.log(birthdayString);
+      console.log(values);
       setIsLoading(true);
       dispatch(userRegister(values));
     },

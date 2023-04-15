@@ -4,7 +4,10 @@ const { ApiError } = require("../middleware/apiError");
 const filterUser = require("../utills/filterUserResponse");
 const { User } = require("../models/user");
 const { ObjectId } = require("mongodb");
-const { sendFriendRequest } = require("../services/user.service");
+const {
+  sendFriendRequest,
+  findUserByIdWithError,
+} = require("../services/user.service");
 
 const usersController = {
   async getProfile(req, res, next) {
@@ -43,18 +46,75 @@ const usersController = {
     }
   },
 
-  async updateProfile(req, res, next) {
+  async updateDescription(req, res, next) {
     try {
-      const user = await userService.updateUserProfile(req);
+      const user = await findUserByIdWithError(req.user._id);
+
+      user.description = req.body.description;
+
+      await user.save();
 
       res.json(filterUser(user));
     } catch (error) {
       next(error);
     }
   },
-  async updateWorkAndSchool(req, res, next) {
+  async updateWork(req, res, next) {
     try {
-      const user = await userService.workAndSchool(req);
+      const user = await findUserByIdWithError(req.user._id);
+      user.work = req.body.work;
+
+      await user.save();
+
+      res.json(filterUser(user));
+    } catch (error) {
+      next(error);
+    }
+  },
+  async updateSchool(req, res, next) {
+    try {
+      const user = await findUserByIdWithError(req.user._id);
+      user.education = req.body.education;
+
+      await user.save();
+
+      res.json(filterUser(user));
+    } catch (error) {
+      next(error);
+    }
+  },
+  async updateLivesIn(req, res, next) {
+    try {
+      const user = await findUserByIdWithError(req.user._id);
+      user.currentTown = req.body.currentTown;
+
+      await user.save();
+
+      res.json(filterUser(user));
+    } catch (error) {
+      next(error);
+    }
+  },
+  async updateRelationship(req, res, next) {
+    try {
+      const user = await findUserByIdWithError(req.user._id);
+      user.relationship = req.body.relationship;
+
+      await user.save();
+
+      res.json(filterUser(user));
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async updateName(req, res, next) {
+    try {
+      const user = await findUserByIdWithError(req.user._id);
+      user.firstname = req.body.firstname;
+      user.lastname = req.body.lastname;
+
+      await user.save();
 
       res.json(filterUser(user));
     } catch (error) {

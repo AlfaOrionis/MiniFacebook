@@ -6,8 +6,13 @@ const auth = require("../middleware/auth");
 router
   .route("/profile")
   .get(usersController.getProfile)
-  .patch(auth(), usersController.updateProfile);
-
+  .patch(auth(), usersController.updateDescription)
+  .patch(auth(), usersController.updateWork)
+  .patch(auth(), usersController.updateSchool)
+  .patch(auth(), usersController.updateLivesIn)
+  .patch(auth(), usersController.updateRelationship)
+  .patch(auth(), usersController.updateName)
+  .patch(auth(), usersController.updatePassword);
 router.patch("/email", auth(), usersController.updateUserEmail);
 router.patch("/password", auth(), usersController.updatePassword);
 router.post("/sendFriendRequest", auth(), usersController.sendFriendRequest);

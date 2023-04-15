@@ -16,6 +16,7 @@ const createUser = async (
     if (await User.emailTaken(email)) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Sorry email taken");
     }
+    console.log(birthday);
     const birthdayDate = new Date(birthday);
     const ageValid = isFifteen(birthdayDate);
     if (!ageValid)

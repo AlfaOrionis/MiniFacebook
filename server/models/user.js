@@ -5,8 +5,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const isFifteen = require("../utills/isFifteen");
-
 const userSchema = mongoose.Schema({
   email: {
     type: String,
@@ -43,6 +41,7 @@ const userSchema = mongoose.Schema({
     type: Date,
     required: true,
     validate(value) {
+      console.log(value);
       if (!validator.isDate(value)) {
         throw new Error("Birthday must be type of Date");
       }
@@ -64,7 +63,7 @@ const userSchema = mongoose.Schema({
     required: false,
     maxLength: 100,
   },
-  intro: {
+  description: {
     type: String,
     required: false,
     maxLength: 100,

@@ -20,9 +20,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "../../../utills/spinner";
 
 const HomeHeader: React.FC<{
+  user_id: string;
   isFocused: boolean;
   handleFocus: (val: boolean) => void;
-}> = ({ isFocused, handleFocus }) => {
+}> = ({ isFocused, handleFocus, user_id }) => {
   const [inputValue, setInputValue] = useState("");
   const [users, setUsers] = useState([]);
   const [searchFocused, setSearchFocused] = useState(false);
@@ -172,12 +173,12 @@ const HomeHeader: React.FC<{
         <div className={styles.SVGContainer}>
           <NotificationSVG />
         </div>
-        <div className={styles.profileContainer}>
+        <Link to={`profile/${user_id}`} className={styles.profileContainer}>
           <img
             alt="Account"
             src="https://i.wpimg.pl/O/1280x720/d.wpimg.pl/1292000565-1150296623/wiedzmin-wiedzmin-netflix.jpg"
           />
-        </div>
+        </Link>
       </div>
     </div>
   );

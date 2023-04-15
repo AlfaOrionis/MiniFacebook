@@ -10,7 +10,7 @@ export interface User {
   relationship?: string;
   work?: string;
   education?: string;
-  intro?: string;
+  description?: string;
   currentTown?: string;
   _id?: string;
   password?: string;
