@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { AppDispatch } from "../index";
-
+import cookie from "react-cookies";
 import { authActions, initialAuthState } from "../slices/auth-slice";
 import { notificationActions } from "../slices/notification-slice";
 import { User } from "../../types/types";
@@ -92,6 +92,18 @@ export const logIn = (values: logInProps) => {
         );
       }
     }
+  };
+};
+
+export const logOut = () => {
+  return (dispatch: AppDispatch) => {
+    cookie.remove("x-access-token", { path: "/" });
+
+    dispatch(
+      authActions.userAuthenticate({
+        ...initialAuthState,
+      })
+    );
   };
 };
 

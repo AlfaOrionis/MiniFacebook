@@ -1,13 +1,14 @@
 import styles from "./profile.module.css";
 import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Route, Routes, useParams } from "react-router";
 import { User } from "../../types/types";
 import { Spinner } from "../../utills/spinner";
 import { MoreSVG } from "../../utills/svg";
 import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import ProfileInfo from "./profileInfo/profileInfo";
+import { Link, NavLink } from "react-router-dom";
+import Posts from "./postsRoute/posts";
+import About from "./aboutRoute/about";
 
 const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
   handleFocus,
@@ -77,19 +78,44 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
           <div className={styles.navContainer}>
             <ul>
               <li>
-                <Link to={`/profile/${params._id}`}>Posts</Link>
+                <NavLink
+                  className={(link) => (link.isActive ? styles.activeLink : "")}
+                  to={`/profile/${params._id}/`}
+                >
+                  Posts
+                </NavLink>
               </li>
               <li>
-                <Link to={`/profile/${params._id}`}>About</Link>
+                <NavLink
+                  className={(link) => (link.isActive ? styles.activeLink : "")}
+                  to={`/profile/${params._id}/about`}
+                >
+                  About
+                </NavLink>
               </li>
               <li>
-                <Link to={`/profile/${params._id}`}>Friends</Link>
+                <NavLink
+                  className={(link) => (link.isActive ? styles.activeLink : "")}
+                  to={`/profile/${params._id}/friends`}
+                >
+                  Friends
+                </NavLink>
               </li>
               <li>
-                <Link to={`/profile/${params._id}`}>Photos</Link>
+                <NavLink
+                  className={(link) => (link.isActive ? styles.activeLink : "")}
+                  to={`/profile/${params._id}/photos`}
+                >
+                  Photos
+                </NavLink>
               </li>
               <li>
-                <Link to={`/profile/${params._id}`}>More</Link>
+                <NavLink
+                  className={(link) => (link.isActive ? styles.activeLink : "")}
+                  to={`/profile/${params._id}/more`}
+                >
+                  More
+                </NavLink>
               </li>
             </ul>
             <div className={styles.MoreSVG}>
@@ -99,12 +125,20 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
         </div>
         <div className={styles.bottomContainerWrapper}>
           <div className={styles.bottomContainer}>
-            <ProfileInfo setUserHandler={setUserHandler} user={user} />
-            <div className={styles.bottomContainer__right}>
-              <div className={styles.card}>
-                RIGHTRIGHTRIGHTRIGHTRIGHTRIGHTRIGHTRIGHT
-              </div>
-            </div>
+            <Routes>
+              <Route
+                path="/about"
+                element={<About setUserHandler={setUserHandler} user={user} />}
+              />
+              <Route
+                path="/*"
+                element={
+                  <>
+                    <Posts setUserHandler={setUserHandler} user={user} />
+                  </>
+                }
+              />
+            </Routes>
           </div>
         </div>
       </div>

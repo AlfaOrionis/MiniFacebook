@@ -40,7 +40,7 @@ const App = () => {
             {user.isAuth && <Route path="/home" element={<Home />} />}
             {user.isAuth && (
               <Route
-                path="/profile/:_id"
+                path="/profile/:_id/*"
                 element={<Profile handleFocus={handleFocus} />}
               />
             )}

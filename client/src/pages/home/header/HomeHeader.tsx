@@ -18,7 +18,7 @@ import { notificationActions } from "../../../store/slices/notification-slice";
 import { boldTypedLetter } from "../../../utills/tools";
 import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "../../../utills/spinner";
-
+import { logOut } from "../../../store/actions/auth-actions";
 const HomeHeader: React.FC<{
   user_id: string;
   isFocused: boolean;
@@ -122,7 +122,7 @@ const HomeHeader: React.FC<{
                     }) => {
                       return (
                         <li key={user._id}>
-                          <Link to={"/profile/" + user._id}>
+                          <Link to={"/profile/" + user._id + "/"}>
                             <div className={styles.SVGContainer}>
                               <SearchSVG />
                             </div>
@@ -173,7 +173,15 @@ const HomeHeader: React.FC<{
         <div className={styles.SVGContainer}>
           <NotificationSVG />
         </div>
-        <Link to={`profile/${user_id}`} className={styles.profileContainer}>
+        <button
+          onClick={() => {
+            dispatch(logOut());
+            navigate("/");
+          }}
+        >
+          Logout
+        </button>
+        <Link to={`profile/${user_id}/`} className={styles.profileContainer}>
           <img
             alt="Account"
             src="https://i.wpimg.pl/O/1280x720/d.wpimg.pl/1292000565-1150296623/wiedzmin-wiedzmin-netflix.jpg"

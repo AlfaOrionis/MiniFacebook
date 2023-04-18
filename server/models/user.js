@@ -52,10 +52,10 @@ const userSchema = mongoose.Schema({
     required: true,
     enum: ["male", "female"],
   },
-  currentTown: {
+  livesIn: {
     type: String,
     required: false,
-    maxLength: 50,
+    maxLength: 100,
   },
   work: { type: String, maxLength: 100 },
   education: {
@@ -83,7 +83,9 @@ const userSchema = mongoose.Schema({
   relationship: {
     type: String,
     required: false,
+    default: "",
     enum: [
+      "",
       "Single",
       "In a relationship",
       "Engaged",

@@ -7,7 +7,10 @@
 .bottomContainer__left {
   width: 100%;
 }
-
+.bottomContainer__right {
+  width: 60%;
+  margin-left: 15px;
+}
 .bottomContainer__description {
   text-align: center;
 }
@@ -67,4 +70,11 @@
   color: rgb(90, 90, 90);
   margin: 3px 0;
   letter-spacing: 0.1px;
+}
+
+@media (max-width: 900px) {
+  .bottomContainer__right {
+    width: 100%;
+    margin: 0;
+  }
 }

@@ -11,7 +11,7 @@ export interface User {
   work?: string;
   education?: string;
   description?: string;
-  currentTown?: string;
+  livesIn?: string;
   _id?: string;
   password?: string;
   joinedOn?: string;

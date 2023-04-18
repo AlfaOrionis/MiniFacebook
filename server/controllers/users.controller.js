@@ -61,7 +61,9 @@ const usersController = {
   },
   async updateWork(req, res, next) {
     try {
+      console.log(req.body);
       const user = await findUserByIdWithError(req.user._id);
+
       user.work = req.body.work;
 
       await user.save();
@@ -86,7 +88,7 @@ const usersController = {
   async updateLivesIn(req, res, next) {
     try {
       const user = await findUserByIdWithError(req.user._id);
-      user.currentTown = req.body.currentTown;
+      user.livesIn = req.body.livesIn;
 
       await user.save();
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import styles from "./profileInfo.module.css";
+import styles from "./posts.module.css";
 import axios from "axios";
 import { User } from "../../../types/types";
 import { getTokenCookie } from "../../../utills/tools";
@@ -26,7 +26,7 @@ const EditBio: React.FC<{
     e.preventDefault();
     axios
       .patch(
-        "/api/users/profile",
+        "/api/users/update/description",
         { description: inputValue },
         {
           headers: { Authorization: `Bearer ${getTokenCookie()}` },
