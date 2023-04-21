@@ -79,13 +79,12 @@ const updatePassword = async (req) => {
 
 const sendFriendRequest = async (req) => {
   const user = req.user;
-  console.log(user);
-  console.log(req.body._id);
   try {
     const friend = await User.findOne({ _id: req.body._id });
     if (!friend) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
     for (const i in user.friendsRequest) {
       if (user.friendsRequest[i]._id.toString() === req.body._id) {
+        //If this request already exists, it means the user wants to cancel it, so i will delete it
         user.friendsRequest.splice(i, 1);
         friend.friendsRequest = friend.friendsRequest.filter(
           (request) => request._id.toString() !== user._id.toString()
@@ -108,10 +107,13 @@ const sendFriendRequest = async (req) => {
     //     );
     // }
 
+    //Creating request
     user.friendsRequest.push({ started: true, _id: friend._id });
     friend.friendsRequest.push({ started: false, _id: user._id });
+
     await friend.save();
     await user.save();
+    //I will return friend to frontend so i can update the page
     return friend;
   } catch (err) {
     throw err;
