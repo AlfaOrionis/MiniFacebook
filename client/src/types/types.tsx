@@ -15,4 +15,5 @@ export interface User {
   _id?: string;
   password?: string;
   joinedOn?: string;
+  photos?: [];
 }

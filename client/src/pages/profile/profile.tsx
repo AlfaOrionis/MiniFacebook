@@ -1,14 +1,15 @@
 import styles from "./profile.module.css";
 import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
-import { Route, Routes, useParams } from "react-router";
+import { Route, Routes, useNavigate, useParams } from "react-router";
 import { User } from "../../types/types";
 import { Spinner } from "../../utills/spinner";
-import { MoreSVG } from "../../utills/svg";
+import { MessengerSVG, MoreSVG } from "../../utills/svg";
 import { Button } from "react-bootstrap";
 import { Link, NavLink } from "react-router-dom";
 import Posts from "./postsRoute/posts";
 import About from "./aboutRoute/about";
+import { useAppSelector } from "../../store";
 
 const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
   handleFocus,
@@ -16,10 +17,12 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const navigate = useNavigate();
+
   const setUserHandler = (data: User) => {
     setUser(data);
   };
-
+  const mySelf = useAppSelector((state) => state.auth);
   const params = useParams<{ _id: string }>();
   useEffect(() => {
     axios
@@ -65,13 +68,22 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
               </div>
             </div>
             <div className={styles.avatarContainer__rightContainer}>
-              <div>
-                <Button>Add to story</Button>
-                <Button>
-                  <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yl/r/tmaz0VO75BB.png" />
-                  Edit profile
-                </Button>
-              </div>
+              {user._id === mySelf.data._id ? (
+                <div>
+                  <Button>Add to story</Button>
+                  <Button onClick={() => navigate("about")}>
+                    <img src="https://static.xx.fbcdn.net/rsrc.php/v3/yl/r/tmaz0VO75BB.png" />
+                    Edit profile
+                  </Button>
+                </div>
+              ) : (
+                <div>
+                  <Button>+ Add friend</Button>
+                  <Button>
+                    <MessengerSVG /> Message
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
           <div className={styles.borderBottom}></div>

@@ -6,6 +6,7 @@ import { profileInfos } from "../../../utills/data";
 import { useState } from "react";
 import EditBio from "./editBio";
 import { useAppSelector } from "../../../store";
+import { Link } from "react-router-dom";
 
 const Posts: React.FC<{
   user: User;
@@ -19,13 +20,16 @@ const Posts: React.FC<{
     setIsEditing(bol);
   };
   console.log(user);
+
+  const photosContainer = document.getElementById("photosContainer");
+
   return (
     <>
       <div className={styles.bottomContainer__left}>
         <div className={`${styles.bottomContainer__Intro} card`}>
           <h2>Intro</h2>
           <div className={styles.bottomContainer__description}>
-            <p>{user.description}</p>
+            {!isEditing && <p>{user.description}</p>}
             {isEditing ? (
               <EditBio
                 userIntro={user.description || ""}
@@ -56,12 +60,74 @@ const Posts: React.FC<{
           })}
         </div>
         <div className={`${styles.bottomContainer__Photos} card`}>
-          gregergerg
+          <div className={styles.photosTitle}>
+            <h2>Photos</h2>
+            <Link to={`/profile/${user._id}/photos`}>See all photos</Link>
+          </div>
+
+          <div id="photosContainer" className={styles.photosContainer}>
+            {photosContainer && user.photos && user.photos.length > 0 && (
+              <>
+                <div className={styles.photosContainer__photo}>
+                  <div
+                    style={{
+                      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
+                    }}
+                  />
+                </div>
+                <div className={styles.photosContainer__photo}>
+                  <div
+                    style={{
+                      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
+                    }}
+                  />
+                </div>
+
+                <div className={styles.photosContainer__photo}>
+                  <div
+                    style={{
+                      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
+                    }}
+                  />
+                </div>
+                <div className={styles.photosContainer__photo}>
+                  <div
+                    style={{
+                      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
+                    }}
+                  />
+                </div>
+                <div className={styles.photosContainer__photo}>
+                  <div
+                    style={{
+                      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
+                    }}
+                  />
+                </div>
+                <div className={styles.photosContainer__photo}>
+                  <div
+                    style={{
+                      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
+                    }}
+                  />
+                </div>
+                <div className={styles.photosContainer__photo}>
+                  <div
+                    style={{
+                      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
+                    }}
+                  />
+                </div>
+              </>
+            )}
+            {!user.photos ||
+              (user.photos.length < 1 && <p>No photos added.</p>)}
+          </div>
         </div>
-        <div className={`${styles.bottomContainer__Friends} card`}>ergerge</div>
+        <div className={`${styles.bottomContainer__Friends} card`}>Friends</div>
       </div>
       <div className={styles.bottomContainer__right}>
-        <div className="card">RIGHTRIGHTRIGHTRIGHTRIGHTRIGHTRIGHTRIGHT</div>
+        <div className="card">Posts</div>
       </div>
     </>
   );

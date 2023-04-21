@@ -162,7 +162,6 @@ const About: React.FC<{ user: User; setUserHandler: (data: User) => void }> = ({
                 <button
                   onClick={() => {
                     setIsEditingHandler(data.type);
-                    console.log("XD");
                     console.log(isEditing);
                   }}
                   className={styles.addInfoContainer}

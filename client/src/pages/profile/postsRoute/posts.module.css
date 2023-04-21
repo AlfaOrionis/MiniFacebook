@@ -5,10 +5,10 @@
 }
 
 .bottomContainer__left {
-  width: 100%;
+  width: 50%;
 }
 .bottomContainer__right {
-  width: 60%;
+  width: 50%;
   margin-left: 15px;
 }
 .bottomContainer__description {
@@ -72,9 +72,42 @@
   letter-spacing: 0.1px;
 }
 
+.photosTitle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.photosTitle h2 {
+  font-size: 24px;
+  font-family: Roboto;
+  font-weight: 500;
+}
+.bottomContainer__Photos {
+  width: 100%;
+}
+.photosContainer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+.photosContainer__photo {
+  width: 33.33%;
+  padding: 2px;
+}
+.photosContainer__photo > div {
+  background-image: url("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/types-of-motorcycles-refresh-lead-1677534605.jpeg?crop=0.566xw:1.00xh;0.147xw,0&resize=1200:*");
+  background-position: center center;
+  background-size: cover;
+  width: 100%;
+}
+
 @media (max-width: 900px) {
   .bottomContainer__right {
     width: 100%;
     margin: 0;
+  }
+  .bottomContainer__left {
+    width: 100%;
   }
 }

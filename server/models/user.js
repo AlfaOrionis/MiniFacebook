@@ -108,6 +108,10 @@ const userSchema = mongoose.Schema({
       required: false,
     },
   ],
+  photos: {
+    type: [String],
+    default: [],
+  },
 });
 
 userSchema.pre("save", async function (next) {
