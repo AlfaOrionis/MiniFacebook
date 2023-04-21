@@ -5,8 +5,8 @@ export interface User {
   birthday: string;
   gender: "male" | "female";
   verified: boolean;
-  friends?: string[];
-  friendsRequest?: string[];
+  friends: string[];
+  friendsRequest: { started: boolean; _id: string }[] | [];
   relationship?: string;
   work?: string;
   education?: string;

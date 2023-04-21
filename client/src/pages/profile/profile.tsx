@@ -4,42 +4,79 @@ import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate, useParams } from "react-router";
 import { User } from "../../types/types";
 import { Spinner } from "../../utills/spinner";
-import { MessengerSVG, MoreSVG } from "../../utills/svg";
+import { AddUserSVG, MessengerSVG, MoreSVG } from "../../utills/svg";
 import { Button } from "react-bootstrap";
 import { Link, NavLink } from "react-router-dom";
 import Posts from "./postsRoute/posts";
 import About from "./aboutRoute/about";
 import { useAppSelector } from "../../store";
+import { getTokenCookie } from "../../utills/tools";
 
 const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
   handleFocus,
 }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+  const [isLoadingFriendReq, setIsLoadingFriendReq] = useState(false);
 
   const navigate = useNavigate();
 
   const setUserHandler = (data: User) => {
     setUser(data);
   };
+  const wasFriendRequestSend = () => {
+    if (user) {
+      return user.friendsRequest.find((req) => req._id === mySelf.data._id);
+    }
+  };
+  const isItMyFriend = () => {
+    if (user) {
+      return user.friends.find((id) => id === mySelf.data._id);
+    }
+    return false;
+  };
+  const friendHandler = () => {
+    setIsLoadingFriendReq(true);
+
+    axios
+      .post(
+        "/api/users/sendFriendRequest",
+        {
+          _id: user?._id,
+        },
+        {
+          headers: { Authorization: `Bearer ${getTokenCookie()}` },
+        }
+      )
+      .then((res) => {
+        setIsLoadingFriendReq(false);
+        setUser(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        setIsLoadingFriendReq(false);
+      });
+  };
   const mySelf = useAppSelector((state) => state.auth);
   const params = useParams<{ _id: string }>();
+
+  console.log(isItMyFriend());
   useEffect(() => {
     axios
       .get("/api/users/profile?_id=" + params._id)
       .then((res: AxiosResponse<User>) => {
         setUserHandler(res.data);
-        setIsLoading(false);
+        setIsLoadingProfile(false);
         handleFocus(false);
       })
       .catch((err) => {
-        setIsLoading(false);
+        setIsLoadingProfile(false);
         handleFocus(false);
         console.log(err);
       });
   }, [params._id]);
 
-  if (user && !isLoading) {
+  if (user && !isLoadingProfile) {
     return (
       <div className={styles.profileContainer}>
         <div className={styles.topContainer}>
@@ -78,7 +115,24 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
                 </div>
               ) : (
                 <div>
-                  <Button>+ Add friend</Button>
+                  {
+                    <Button
+                      className={styles.addFriendBtn}
+                      onClick={friendHandler}
+                    >
+                      {isLoadingFriendReq ? (
+                        <Spinner className={styles.btnSpinner} />
+                      ) : (
+                        <AddUserSVG />
+                      )}
+                      {!wasFriendRequestSend() ? (
+                        <span> Add friend</span>
+                      ) : (
+                        <span>Cancel Request</span>
+                      )}
+                    </Button>
+                  }
+
                   <Button>
                     <MessengerSVG /> Message
                   </Button>
@@ -155,9 +209,20 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
         </div>
       </div>
     );
-  } else if (!user && !isLoading)
+  } else if (!user && !isLoadingProfile)
     return <div>This content isn't available at the moment</div>;
-  else return <Spinner />;
+  else
+    return (
+      <div
+        style={{
+          cursor: "wait",
+          position: "fixed",
+          width: "100vw",
+          height: "100vh",
+          zIndex: "10000000",
+        }}
+      ></div>
+    );
 };
 
 export default Profile;

@@ -103,9 +103,14 @@ const userSchema = mongoose.Schema({
   ],
   friendsRequest: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: false,
+      user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+      started: {
+        type: Boolean,
+        default: false,
+      },
     },
   ],
   photos: {

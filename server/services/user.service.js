@@ -79,29 +79,40 @@ const updatePassword = async (req) => {
 
 const sendFriendRequest = async (req) => {
   const user = req.user;
+  console.log(user);
+  console.log(req.body._id);
   try {
-    const friend = await User.findOne({ _id: req.body.id });
+    const friend = await User.findOne({ _id: req.body._id });
     if (!friend) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
-    for (const id in user.friendsRequest) {
-      if (user.friendsRequest[id].toString() === req.body.id)
-        throw new ApiError(
-          httpStatus.BAD_REQUEST,
-          "You already sent friend request to this user"
+    for (const i in user.friendsRequest) {
+      if (user.friendsRequest[i]._id.toString() === req.body._id) {
+        user.friendsRequest.splice(i, 1);
+        friend.friendsRequest = friend.friendsRequest.filter(
+          (request) => request._id.toString() !== user._id.toString()
         );
-    }
-    for (const id in user.friends) {
-      if (user.friends[id].toString() === req.body.id)
-        throw new ApiError(
-          httpStatus.BAD_REQUEST,
-          "This user is already your friend"
+        console.log(
+          friend.friendsRequest.filter(
+            (request) => request._id.toString() !== user._id.toString()
+          )
         );
+        await friend.save();
+        await user.save();
+        return friend;
+      }
     }
+    // for (const id in user.friends) {
+    //   if (user.friends[id].toString() === req.body.id)
+    //     throw new ApiError(
+    //       httpStatus.BAD_REQUEST,
+    //       "This user is already your friend"
+    //     );
+    // }
 
-    user.friendsRequest.push(friend._id);
-    friend.friendsRequest.push(user.id);
+    user.friendsRequest.push({ started: true, _id: friend._id });
+    friend.friendsRequest.push({ started: false, _id: user._id });
     await friend.save();
     await user.save();
-    return user;
+    return friend;
   } catch (err) {
     throw err;
   }

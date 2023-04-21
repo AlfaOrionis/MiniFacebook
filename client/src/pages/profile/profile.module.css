@@ -168,6 +168,17 @@
   padding-bottom: 30px;
 }
 
+button.addFriendBtn {
+  display: flex;
+  align-items: center;
+}
+
+.btnSpinner {
+  width: 22px;
+  height: 22px;
+  margin-right: 8px;
+}
+
 @media (max-width: 900px) {
   :root {
     --width: 700px;
@@ -200,4 +211,22 @@
 .activeLink {
   border-bottom: 3px solid rgb(58, 68, 255) !important;
   color: rgb(58, 68, 255) !important;
+}
+
+@media (max-width: 400px) {
+  .avatarContainer__rightContainer {
+    min-width: 260px;
+    width: 80%;
+  }
+  .avatarContainer__rightContainer > div {
+    flex-direction: column;
+  }
+  .avatarContainer__rightContainer > div button {
+    width: 100%;
+    margin: 0 !important;
+    justify-content: center;
+  }
+  .avatarContainer__rightContainer > div > button:nth-of-type(1) {
+    margin-bottom: 8px !important;
+  }
 }

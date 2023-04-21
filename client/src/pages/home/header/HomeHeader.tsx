@@ -12,20 +12,21 @@ import {
   WatchSVG,
 } from "../../../utills/svg";
 import styles from "./HomeHeader.module.css";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useAppDispatch } from "../../../store";
 import { notificationActions } from "../../../store/slices/notification-slice";
 import { boldTypedLetter } from "../../../utills/tools";
 import { Link, useNavigate } from "react-router-dom";
 import { Spinner } from "../../../utills/spinner";
 import { logOut } from "../../../store/actions/auth-actions";
+import { User } from "../../../types/types";
 const HomeHeader: React.FC<{
   user_id: string;
   isFocused: boolean;
   handleFocus: (val: boolean) => void;
 }> = ({ isFocused, handleFocus, user_id }) => {
   const [inputValue, setInputValue] = useState("");
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [searchFocused, setSearchFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -43,10 +44,11 @@ const HomeHeader: React.FC<{
   console.log(isFocused);
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(
+      const response: AxiosResponse<User[]> = await axios.get(
         "/api/users/users?input=" + inputValue + "&limit=" + 7
       );
-      setUsers(response.data);
+      console.log(response);
+      setUsers(response.data.filter((user) => user._id !== user_id));
     } catch (err) {
       if (axios.isAxiosError(err))
         dispatch(
@@ -58,7 +60,6 @@ const HomeHeader: React.FC<{
     }
     setIsLoading(false);
   };
-  console.log(users);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -114,29 +115,23 @@ const HomeHeader: React.FC<{
             >
               {users.length > 0 ? (
                 <ul>
-                  {users.map(
-                    (user: {
-                      firstname: string;
-                      lastname: string;
-                      _id: string;
-                    }) => {
-                      return (
-                        <li key={user._id}>
-                          <Link to={"/profile/" + user._id + "/"}>
-                            <div className={styles.SVGContainer}>
-                              <SearchSVG />
-                            </div>
-                            <p style={{ fontWeight: "bold" }}>
-                              {boldTypedLetter(
-                                inputValue,
-                                `${user.firstname} ${user.lastname}`
-                              )}
-                            </p>
-                          </Link>
-                        </li>
-                      );
-                    }
-                  )}
+                  {users.map((user: User) => {
+                    return (
+                      <li key={user._id}>
+                        <Link to={"/profile/" + user._id + "/"}>
+                          <div className={styles.SVGContainer}>
+                            <SearchSVG />
+                          </div>
+                          <p style={{ fontWeight: "bold" }}>
+                            {boldTypedLetter(
+                              inputValue,
+                              `${user.firstname} ${user.lastname}`
+                            )}
+                          </p>
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               ) : (
                 <div className={styles.noUsersFound}>

@@ -10,7 +10,7 @@ interface initialState {
     gender: "male" | "female" | "";
     verified: boolean;
     friends?: string[];
-    friendsRequest?: string[];
+    friendsRequest?: { started: boolean; _id: string }[] | [];
     _id?: string;
   };
 }

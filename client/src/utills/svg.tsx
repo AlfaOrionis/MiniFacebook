@@ -181,3 +181,27 @@ export const AddSVG = () => {
     </svg>
   );
 };
+
+export const AddUserSVG = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="white"
+      width="20px"
+      height="20px"
+      viewBox="0 0 24 24"
+      id="add-user-9"
+      data-name="Flat Color"
+      style={{ marginRight: "3px", minWidth: "20px" }}
+    >
+      <path
+        id="secondary"
+        d="M19,8a1,1,0,0,1-1-1V6H17a1,1,0,0,1,0-2h1V3a1,1,0,0,1,2,0V4h1a1,1,0,0,1,0,2H20V7A1,1,0,0,1,19,8Z"
+      />
+      <path
+        id="primary"
+        d="M16.48,13.35A6.86,6.86,0,0,0,18,8.88,4.49,4.49,0,0,1,14.5,4.5a4.62,4.62,0,0,1,.24-1.4,6.8,6.8,0,0,0-2.9-1.05A7,7,0,0,0,4,9a7.23,7.23,0,0,0,1.5,4.39A8,8,0,0,0,2,20a2,2,0,0,0,2,2H18a2,2,0,0,0,2-2A8.1,8.1,0,0,0,16.48,13.35Z"
+      />
+    </svg>
+  );
+};
