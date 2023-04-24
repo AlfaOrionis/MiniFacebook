@@ -173,6 +173,16 @@ const usersController = {
       next(err);
     }
   },
+
+  async confirmFriendRequest(req, res, next) {
+    try {
+      const result = await userService.confirmFriendRequest(req);
+
+      res.status(httpStatus.CREATED).send(result);
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 module.exports = usersController;

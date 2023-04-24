@@ -11,6 +11,7 @@ import Posts from "./postsRoute/posts";
 import About from "./aboutRoute/about";
 import { useAppSelector } from "../../store";
 import { getTokenCookie } from "../../utills/tools";
+import Backdrop from "../../utills/backdrop";
 
 const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
   handleFocus,
@@ -18,23 +19,17 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
   const [user, setUser] = useState<User | null>(null);
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const [isLoadingFriendReq, setIsLoadingFriendReq] = useState(false);
-
+  const [showRespond, setShowRespond] = useState(false);
   const navigate = useNavigate();
+
+  const mySelf = useAppSelector((state) => state.auth);
 
   const setUserHandler = (data: User) => {
     setUser(data);
   };
-  const wasFriendRequestSend = () => {
-    if (user) {
-      return user.friendsRequest.find((req) => req._id === mySelf.data._id);
-    }
-  };
-  const isItMyFriend = () => {
-    if (user) {
-      return user.friends.find((id) => id === mySelf.data._id);
-    }
-    return false;
-  };
+  const wasFriendRequestSend =
+    user && user.friendsRequest.find((req) => req._id === mySelf.data._id);
+
   const friendHandler = () => {
     setIsLoadingFriendReq(true);
 
@@ -57,10 +52,35 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
         setIsLoadingFriendReq(false);
       });
   };
-  const mySelf = useAppSelector((state) => state.auth);
+  const confirmRequestHandler = async () => {
+    await axios
+      .post(
+        "/api/users/confirmFriendRequest",
+        {
+          _id: user!._id,
+        },
+        {
+          headers: { Authorization: `Bearer ${getTokenCookie()}` },
+        }
+      )
+      .then((res: AxiosResponse<{ friend: User; user: User }>) => {
+        setUser(res.data.friend);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const openShowHandler = () => {
+    setShowRespond(true);
+  };
+  const closeShowHandler = () => {
+    setShowRespond(false);
+  };
+
   const params = useParams<{ _id: string }>();
 
-  console.log(isItMyFriend());
   useEffect(() => {
     axios
       .get("/api/users/profile?_id=" + params._id)
@@ -75,7 +95,22 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
         console.log(err);
       });
   }, [params._id]);
-
+  const isItMyFriend = () => {
+    if (user) {
+      return user.friends.find((id) => id === mySelf.data._id);
+    }
+    return false;
+  };
+  const friendState = () => {
+    if (!wasFriendRequestSend) {
+      if (isItMyFriend()) return "friend";
+      return "emptyOrStarted";
+    } else if (wasFriendRequestSend && !wasFriendRequestSend.started) {
+      return "emptyOrStarted";
+    } else if (wasFriendRequestSend && wasFriendRequestSend.started) {
+      return "started";
+    }
+  };
   if (user && !isLoadingProfile) {
     return (
       <div className={styles.profileContainer}>
@@ -115,7 +150,7 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
                 </div>
               ) : (
                 <div>
-                  {
+                  {friendState() === "emptyOrStarted" && (
                     <Button
                       className={styles.addFriendBtn}
                       onClick={friendHandler}
@@ -125,15 +160,32 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
                       ) : (
                         <AddUserSVG />
                       )}
-                      {!wasFriendRequestSend() ? (
+                      {!wasFriendRequestSend ? (
                         <span> Add friend</span>
                       ) : (
                         <span>Cancel Request</span>
                       )}
                     </Button>
-                  }
+                  )}
+                  {friendState() === "started" && (
+                    <div className={styles.respondBtnContainer}>
+                      <Button onClick={openShowHandler}>Respond</Button>
+                      {showRespond && (
+                        <div className={styles.respondBtnContainer__div}>
+                          <button onClick={confirmRequestHandler}>
+                            Confirm
+                          </button>
+                          <button onClick={friendHandler}>
+                            Remove request
+                          </button>
+                        </div>
+                      )}
+                      {showRespond && <Backdrop onClick={closeShowHandler} />}
+                    </div>
+                  )}
+                  {friendState() === "friend" && "XD"}
 
-                  <Button>
+                  <Button className={styles.messageBtn}>
                     <MessengerSVG /> Message
                   </Button>
                 </div>

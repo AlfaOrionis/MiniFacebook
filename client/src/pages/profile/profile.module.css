@@ -52,20 +52,22 @@
   align-items: flex-end;
   height: 80%;
 }
-.avatarContainer__rightContainer div > button:nth-of-type(1) {
-  border: none;
-  margin-right: 10px;
-}
-.avatarContainer__rightContainer div > button:nth-of-type(2) {
+.avatarContainer__rightContainer div > button {
   display: flex;
   align-items: center;
-  color: black;
-  background-color: rgb(229, 229, 229);
+  font-size: 15px;
   border: none;
   font-weight: 500;
-  font-size: 15px;
+  font-family: Roboto;
 }
-.avatarContainer__rightContainer div > button:nth-of-type(2) svg {
+.avatarContainer__rightContainer div > button:nth-of-type(1) {
+  margin-right: 10px;
+}
+.avatarContainer__rightContainer .messageBtn {
+  color: black;
+  background-color: rgb(229, 229, 229);
+}
+.avatarContainer__rightContainer .messageBtn svg {
   fill: black;
   margin-right: 5px;
 }
@@ -212,6 +214,39 @@ button.addFriendBtn {
   border-bottom: 3px solid rgb(58, 68, 255) !important;
   color: rgb(58, 68, 255) !important;
 }
+.respondBtnContainer {
+  position: relative;
+}
+.respondBtnContainer__div {
+  position: absolute;
+  z-index: 10000000;
+  top: 100%;
+  left: -118px;
+  margin-top: 5px;
+  padding: 12px;
+  border-radius: 10px;
+  width: 320px;
+  box-shadow: 0px 0px 8px 1px rgb(183, 183, 183);
+  background-color: rgb(255, 255, 255);
+}
+.respondBtnContainer__div button {
+  background-color: transparent;
+  width: 100%;
+  border-radius: 5px;
+  padding: 5px 0 5px 5px;
+}
+.respondBtnContainer__div button:hover {
+  background-color: rgb(237, 237, 237);
+}
+@media (max-width: 500px) {
+  .respondBtnContainer__div {
+    width: 280px;
+    left: 0;
+  }
+  .respondBtnContainer__div button {
+    justify-content: flex-start !important;
+  }
+}
 
 @media (max-width: 400px) {
   .avatarContainer__rightContainer {
@@ -221,6 +256,10 @@ button.addFriendBtn {
   .avatarContainer__rightContainer > div {
     flex-direction: column;
   }
+  .respondBtnContainer {
+    width: 100%;
+    margin-bottom: 8px !important;
+  }
   .avatarContainer__rightContainer > div button {
     width: 100%;
     margin: 0 !important;
@@ -228,5 +267,8 @@ button.addFriendBtn {
   }
   .avatarContainer__rightContainer > div > button:nth-of-type(1) {
     margin-bottom: 8px !important;
+  }
+  .respondBtnContainer__div {
+    width: 100%;
   }
 }

@@ -89,11 +89,7 @@ const sendFriendRequest = async (req) => {
         friend.friendsRequest = friend.friendsRequest.filter(
           (request) => request._id.toString() !== user._id.toString()
         );
-        console.log(
-          friend.friendsRequest.filter(
-            (request) => request._id.toString() !== user._id.toString()
-          )
-        );
+
         await friend.save();
         await user.save();
         return friend;
@@ -119,7 +115,32 @@ const sendFriendRequest = async (req) => {
     throw err;
   }
 };
+
+const confirmFriendRequest = async (req) => {
+  const user = req.user;
+  try {
+    const friend = await User.findOne({ _id: req.body._id });
+    if (!friend) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+
+    friend.friendsRequest = friend.friendsRequest.filter(
+      (request) => request._id.toString() !== user._id.toString()
+    );
+    friend.friends.push(user._id);
+
+    user.friendsRequest = user.friendsRequest.filter(
+      (request) => request._id.toString() !== friend._id.toString()
+    );
+    user.friends.push(friend._id);
+    await friend.save();
+    await user.save();
+
+    return { user, friend };
+  } catch (err) {
+    throw err;
+  }
+};
 module.exports = {
+  confirmFriendRequest,
   findUserByEmail,
   findUserById,
   updateUserEmail,

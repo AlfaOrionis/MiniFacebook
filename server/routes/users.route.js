@@ -17,6 +17,11 @@ router.patch("/update/names", auth(), usersController.updateName);
 router.patch("/email", auth(), usersController.updateUserEmail);
 router.patch("/password", auth(), usersController.updatePassword);
 router.post("/sendFriendRequest", auth(), usersController.sendFriendRequest);
+router.post(
+  "/confirmFriendRequest",
+  auth(),
+  usersController.confirmFriendRequest
+);
 router.get("/verify", usersController.verifyAccount);
 router.get("/users", usersController.getUsers);
 
