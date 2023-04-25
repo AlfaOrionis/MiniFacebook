@@ -183,6 +183,16 @@ const usersController = {
       next(err);
     }
   },
+
+  async removeFriend(req, res, next) {
+    try {
+      const result = await userService.removeFriend(req);
+
+      res.status(httpStatus.CREATED).send(result);
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 module.exports = usersController;

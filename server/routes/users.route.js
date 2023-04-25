@@ -22,6 +22,7 @@ router.post(
   auth(),
   usersController.confirmFriendRequest
 );
+router.post("/removeFriend", auth(), usersController.removeFriend);
 router.get("/verify", usersController.verifyAccount);
 router.get("/users", usersController.getUsers);
 

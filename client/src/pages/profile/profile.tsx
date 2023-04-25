@@ -52,8 +52,8 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
         setIsLoadingFriendReq(false);
       });
   };
-  const confirmRequestHandler = async () => {
-    await axios
+  const confirmRequestHandler = () => {
+    axios
       .post(
         "/api/users/confirmFriendRequest",
         {
@@ -70,6 +70,20 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
       .catch((err) => {
         console.log(err);
       });
+  };
+  const removeFriend = () => {
+    axios
+      .post(
+        "/api/users/removeFriend",
+        {
+          _id: user!._id,
+        },
+        { headers: { Authorization: `Bearer ${getTokenCookie()}` } }
+      )
+      .then((res: AxiosResponse<{ friend: User; user: User }>) =>
+        setUser(res.data.friend)
+      )
+      .catch((err) => console.log(err));
   };
 
   const openShowHandler = () => {
@@ -183,7 +197,9 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
                       {showRespond && <Backdrop onClick={closeShowHandler} />}
                     </div>
                   )}
-                  {friendState() === "friend" && "XD"}
+                  {friendState() === "friend" && (
+                    <button onClick={removeFriend}>RemoveFriend</button>
+                  )}
 
                   <Button className={styles.messageBtn}>
                     <MessengerSVG /> Message

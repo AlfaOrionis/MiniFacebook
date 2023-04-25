@@ -95,14 +95,6 @@ const sendFriendRequest = async (req) => {
         return friend;
       }
     }
-    // for (const id in user.friends) {
-    //   if (user.friends[id].toString() === req.body.id)
-    //     throw new ApiError(
-    //       httpStatus.BAD_REQUEST,
-    //       "This user is already your friend"
-    //     );
-    // }
-
     //Creating request
     user.friendsRequest.push({ started: true, _id: friend._id });
     friend.friendsRequest.push({ started: false, _id: user._id });
@@ -139,7 +131,29 @@ const confirmFriendRequest = async (req) => {
     throw err;
   }
 };
+
+const removeFriend = async (req) => {
+  const user = req.user;
+  const friend = await User.findOne({ _id: req.body._id });
+  if (!friend) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+
+  try {
+    user.friends = user.friends.filter(
+      (friend) => friend._id.toString() !== req.body._id.toString()
+    );
+    friend.friends = friend.friends.filter(
+      (fr) => fr._id.toString() !== user._id.toString()
+    );
+
+    await user.save();
+    await friend.save();
+    return { user, friend };
+  } catch (err) {
+    throw err;
+  }
+};
 module.exports = {
+  removeFriend,
   confirmFriendRequest,
   findUserByEmail,
   findUserById,
