@@ -99,6 +99,16 @@ const sendFriendRequest = async (req) => {
     user.friendsRequest.push({ started: true, _id: friend._id });
     friend.friendsRequest.push({ started: false, _id: user._id });
 
+    friend.notifications.push({
+      _id: user._id,
+      category: "request",
+      friend: {
+        name: `${user.firstname} ${user.lastname}`,
+        img: user.profilePicture,
+      },
+    });
+    friend.notificationsChecked = false;
+
     await friend.save();
     await user.save();
     //I will return friend to frontend so i can update the page
@@ -123,6 +133,16 @@ const confirmFriendRequest = async (req) => {
       (request) => request._id.toString() !== friend._id.toString()
     );
     user.friends.push(friend._id);
+    friend.notifications.push({
+      _id: user._id,
+      category: "newFriend",
+      friend: {
+        name: `${user.firstname} ${user.lastname}`,
+        img: user.profilePicture,
+      },
+    });
+    friend.notificationsChecked = false;
+
     await friend.save();
     await user.save();
 

@@ -117,6 +117,38 @@ const userSchema = mongoose.Schema({
     type: [String],
     default: [],
   },
+  profilePicture: {
+    type: String,
+    default:
+      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
+    required: true,
+  },
+  notifications: {
+    type: [
+      {
+        _id: { type: Schema.Types.ObjectId, ref: "User", required: true },
+        category: {
+          type: String,
+          enum: ["request", "newFriend"],
+          required: true,
+        },
+        friend: {
+          name: { type: String, required: true },
+          img: { type: String, required: true },
+        },
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    default: [],
+  },
+  notificationsChecked: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 
 userSchema.pre("save", async function (next) {

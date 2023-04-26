@@ -10,14 +10,13 @@ import HomeHeader from "./pages/home/header/HomeHeader";
 import { useAppDispatch } from "./store";
 import { isAuth } from "./store/actions/auth-actions";
 import { Spinner } from "./utills/spinner";
+import { User } from "./types/types";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isFocused, setIsFocused] = useState(false);
   const user = useAppSelector((state) => state.auth);
-  console.log(user.isAuth);
   const dispatch = useAppDispatch();
-
   useEffect(() => {
     dispatch(isAuth()).then((res) => setIsLoading(false));
   }, []);
@@ -25,12 +24,13 @@ const App = () => {
   const handleFocus = (bol: boolean) => {
     setIsFocused(bol);
   };
+  console.log("APP PRZELADOWANIE");
   if (!isLoading) {
     return (
       <BrowserRouter>
         {user.isAuth && (
           <HomeHeader
-            user_id={user.data._id || ""}
+            user={user}
             isFocused={isFocused}
             handleFocus={handleFocus}
           />

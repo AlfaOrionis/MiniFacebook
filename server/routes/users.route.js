@@ -22,6 +22,9 @@ router.post(
   auth(),
   usersController.confirmFriendRequest
 );
+router.patch("/setNotifTrue", auth(), usersController.setNotifTrue);
+router.patch("/addNotification", auth(), usersController.addNotification);
+router.patch("/removeNotification", auth(), usersController.removeNotification);
 router.post("/removeFriend", auth(), usersController.removeFriend);
 router.get("/verify", usersController.verifyAccount);
 router.get("/users", usersController.getUsers);

@@ -193,6 +193,55 @@ const usersController = {
       next(err);
     }
   },
+
+  async addNotification(req, res, next) {
+    try {
+      const user = req.user;
+      const friend = await User.findById(req.body._id);
+      console.log(req.body);
+      user.notifications.push({
+        _id: req.body._id,
+        category: req.body.category,
+        friend: {
+          name: `${friend.firstname} ${friend.lastname}`,
+          img: friend.profilePicture,
+        },
+      });
+      user.notificationsChecked = false;
+
+      await user.save();
+
+      res.status(httpStatus.CREATED).send(user);
+    } catch (err) {
+      next(err);
+    }
+  },
+  async removeNotification(req, res, next) {
+    try {
+      const user = req.user;
+
+      user.notifications = user.notifications.filter(
+        (not) => not._id.toString() !== req.body._id
+      );
+
+      await user.save();
+      res.status(httpStatus.CREATED).send(user);
+    } catch (err) {
+      next(err);
+    }
+  },
+  async setNotifTrue(req, res, next) {
+    try {
+      const user = req.user;
+
+      user.notificationsChecked = true;
+      await user.save();
+
+      res.status(httpStatus.CREATED).send(user);
+    } catch (err) {
+      next(err);
+    }
+  },
 };
 
 module.exports = usersController;

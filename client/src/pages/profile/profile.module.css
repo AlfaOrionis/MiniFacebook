@@ -68,7 +68,6 @@
   background-color: rgb(229, 229, 229);
 }
 .avatarContainer__rightContainer .messageBtn svg {
-  fill: black;
   margin-right: 5px;
 }
 .avatarContainer div > button > img {

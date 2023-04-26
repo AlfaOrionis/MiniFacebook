@@ -11,11 +11,13 @@ import { getTokenCookie } from "../../../utills/tools";
 import { useAppDispatch } from "../../../store";
 import { notificationActions } from "../../../store/slices/notification-slice";
 import { AddSVG } from "../../../utills/svg";
+import { initialState } from "../../../store/slices/auth-slice";
 
-const About: React.FC<{ user: User; setUserHandler: (data: User) => void }> = ({
-  user,
-  setUserHandler,
-}) => {
+const About: React.FC<{
+  mySelf: initialState;
+  user: User;
+  setUserHandler: (data: User) => void;
+}> = ({ mySelf, user, setUserHandler }) => {
   const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState<type>("");
 
@@ -58,6 +60,7 @@ const About: React.FC<{ user: User; setUserHandler: (data: User) => void }> = ({
     setInputValue(e.target.value);
   };
   console.log(inputValue);
+
   return (
     <div className={`${styles.aboutContainer} card`}>
       <div>
@@ -158,7 +161,8 @@ const About: React.FC<{ user: User; setUserHandler: (data: User) => void }> = ({
             );
           } else {
             return (
-              data.add && (
+              data.add &&
+              user._id === mySelf.data._id && (
                 <button
                   onClick={() => {
                     setIsEditingHandler(data.type);

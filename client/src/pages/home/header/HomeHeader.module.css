@@ -166,6 +166,108 @@
   font-weight: bold;
 }
 
+.notContainer {
+  position: relative;
+}
+.notContainer__number {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: -5px;
+  right: -5px;
+  background-color: red;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+}
+.notWrapper {
+  position: relative;
+}
+.notList {
+  position: absolute;
+  z-index: 9999999999999;
+  top: 45px;
+  left: -210px;
+  background-color: white;
+  box-shadow: 0 0 5px 1px rgb(164, 164, 164);
+  padding: 10px 5px;
+  border-radius: 5px;
+  width: 360px;
+}
+.notWrapper h2 {
+  font-size: 22px;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 20px;
+  margin-left: 5px;
+}
+.notList ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+.notList ul li {
+  display: flex;
+  border-radius: 5px;
+}
+.notList ul li > div {
+  display: flex;
+  cursor: pointer;
+  font-size: 15px;
+  max-height: 94px;
+  overflow: hidden;
+  padding: 4px 5px;
+}
+.notList ul li button {
+  border: none;
+  width: fit-content;
+  height: fit-content;
+  background-color: transparent;
+}
+.notList ul li button:hover svg {
+  fill: blue;
+}
+.notList ul li svg {
+  margin-left: 4px;
+}
+.notList ul li:hover {
+  background-color: rgb(245, 245, 245);
+}
+.notList ul li > div div:nth-of-type(2) {
+  display: flex;
+  flex-direction: column;
+}
+.notList ul li > div div:nth-of-type(2) p {
+  margin: 0;
+}
+.notList ul li > div div:nth-of-type(2) > span {
+  font-size: 12px;
+  color: rgb(24, 118, 242);
+}
+.notList ul li > div div:nth-of-type(1) {
+  border-radius: 100%;
+  overflow: hidden;
+  width: 55px;
+  min-width: 55px;
+  height: 55px;
+  margin-right: 10px;
+}
+.notList ul li div img {
+  width: 100%;
+  height: 100%;
+}
+body {
+  min-height: 2000px;
+}
+.notList span {
+  font-weight: bold;
+}
+.notList img {
+  width: 50px;
+}
+
 @media (max-width: 768px) {
   .HomeHeader__middle ul li:nth-child(-n + 4) {
     display: none;
@@ -179,5 +281,15 @@
   .HomeHeader__left input {
     min-width: 32px;
     width: 33px;
+  }
+}
+
+@media (max-width: 400px) {
+  .notList {
+    width: auto;
+    position: fixed;
+    top: 55px;
+    left: 3vw;
+    right: 3vw;
   }
 }

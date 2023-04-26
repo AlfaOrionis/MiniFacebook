@@ -1,9 +1,16 @@
+export interface notification {
+  _id: string;
+  category: "request" | "newFriend";
+  friend: { name: string; img: string };
+  date: Date;
+}
+
 export interface User {
   email: string;
   firstname: string;
   lastname: string;
   birthday: string;
-  gender: "male" | "female";
+  gender: "male" | "female" | "";
   verified: boolean;
   friends: string[];
   friendsRequest: { started: boolean; _id: string }[] | [];
@@ -16,4 +23,6 @@ export interface User {
   password?: string;
   joinedOn?: string;
   photos?: [];
+  notifications: notification[] | [];
+  notificationsChecked: boolean;
 }
