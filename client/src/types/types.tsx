@@ -4,6 +4,12 @@ export interface notification {
   friend: { name: string; img: string };
   date: Date;
 }
+export interface friend {
+  _id: string;
+  firstname: string;
+  lastname: string;
+  profilePicture: string;
+}
 
 export interface User {
   email: string;
@@ -12,7 +18,7 @@ export interface User {
   birthday: string;
   gender: "male" | "female" | "";
   verified: boolean;
-  friends: string[];
+  friends: friend[] | [];
   friendsRequest: { started: boolean; _id: string }[] | [];
   relationship?: string;
   work?: string;
@@ -25,4 +31,5 @@ export interface User {
   photos?: [];
   notifications: notification[] | [];
   notificationsChecked: boolean;
+  profilePicture: string;
 }

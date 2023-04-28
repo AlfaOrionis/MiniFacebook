@@ -195,6 +195,8 @@
   padding: 10px 5px;
   border-radius: 5px;
   width: 360px;
+  max-height: 70vh;
+  overflow-y: auto;
 }
 .notWrapper h2 {
   font-size: 22px;

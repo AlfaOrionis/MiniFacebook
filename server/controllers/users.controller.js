@@ -4,15 +4,28 @@ const { ApiError } = require("../middleware/apiError");
 const filterUser = require("../utills/filterUserResponse");
 const { User } = require("../models/user");
 const { ObjectId } = require("mongodb");
+const cloudinary = require("cloudinary").v2;
 const {
   sendFriendRequest,
   findUserByIdWithError,
 } = require("../services/user.service");
 
+cloudinary.config({
+  cloud_name: `${process.env.CLOUDINARY_USER}`,
+  api_key: `${process.env.CLOUDINARY_KEY}`,
+  api_secret: `${process.env.CLOUDINARY_SECRET}`,
+});
+
 const usersController = {
   async getProfile(req, res, next) {
     try {
-      const user = await userService.findUserById(req.query._id);
+      const user = await User.findById(req.query._id).populate({
+        path: "friends",
+        select: "firstname lastname profilePicture",
+        options: {
+          limit: 8,
+        },
+      });
       if (!user) {
         throw new ApiError(httpStatus.NOT_FOUND, "User not found");
       }
@@ -238,6 +251,37 @@ const usersController = {
       await user.save();
 
       res.status(httpStatus.CREATED).send(user);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async getFriends(req, res, next) {
+    try {
+      const user = req.user;
+      const populateduser = await User.findById(user._id).populate({
+        path: "friends",
+        select: "firstname lastname profilePicture",
+        options: {
+          limit: 8,
+        },
+      });
+      res.json(populateduser.friends);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async addPicture(req, res, next) {
+    try {
+      const upload = await cloudinary.uploader.upload(req.files.file.path, {
+        public_id: `${Date.now()}`,
+        folder: "minifacebook",
+      });
+      res.json({
+        public_id: upload.public_id,
+        url: upload.url,
+      });
     } catch (err) {
       next(err);
     }

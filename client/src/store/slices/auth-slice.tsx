@@ -13,6 +13,7 @@ interface initialData {
   _id?: string;
   notifications: [] | notification[];
   notificationsChecked: boolean;
+  profilePicture: string;
 }
 export interface initialState {
   isAuth: boolean;
@@ -32,6 +33,7 @@ export const initialAuthState: initialState = {
     friendsRequest: [],
     notifications: [],
     notificationsChecked: false,
+    profilePicture: "",
   },
 };
 

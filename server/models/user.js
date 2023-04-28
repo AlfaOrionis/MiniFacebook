@@ -96,9 +96,10 @@ const userSchema = mongoose.Schema({
   },
   friends: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: false,
+      _id: { type: Schema.Types.ObjectId, ref: "User", required: false },
+      firstname: { type: String },
+      lastname: { type: String },
+      profilePicture: { type: String },
     },
   ],
   friendsRequest: [

@@ -44,6 +44,7 @@
 
 .avatarContainer__leftContainer {
   display: flex;
+  align-items: flex-end;
 }
 
 .avatarContainer__rightContainer > div {
@@ -81,6 +82,7 @@
   border: 5px solid white;
   overflow: hidden;
   margin-top: -30px;
+  cursor: pointer;
 }
 .avatarIMG img {
   width: 100%;
@@ -245,6 +247,29 @@ button.addFriendBtn {
   .respondBtnContainer__div button {
     justify-content: flex-start !important;
   }
+}
+
+.friendsContainer ul {
+  display: flex;
+  padding: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.friendsContainer ul li {
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+  border-radius: 100%;
+  margin-right: -9px;
+
+  position: relative;
+  border: 2px solid rgb(255, 255, 255);
+}
+.friendsContainer ul li:nth-child(odd) {
+  z-index: 10;
+}
+.friendsContainer ul li img {
+  width: 100%;
 }
 
 @media (max-width: 400px) {

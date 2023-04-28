@@ -127,12 +127,22 @@ const confirmFriendRequest = async (req) => {
     friend.friendsRequest = friend.friendsRequest.filter(
       (request) => request._id.toString() !== user._id.toString()
     );
-    friend.friends.push(user._id);
+    friend.friends.push({
+      _id: user._id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      profilePicture: user.profilePicture,
+    });
 
     user.friendsRequest = user.friendsRequest.filter(
       (request) => request._id.toString() !== friend._id.toString()
     );
-    user.friends.push(friend._id);
+    user.friends.push({
+      _id: friend._id,
+      firstname: friend.firstname,
+      lastname: friend.lastname,
+      profilePicture: friend.profilePicture,
+    });
     friend.notifications.push({
       _id: user._id,
       category: "newFriend",
@@ -158,6 +168,7 @@ const removeFriend = async (req) => {
   if (!friend) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
 
   try {
+    console.log(user.friends);
     user.friends = user.friends.filter(
       (friend) => friend._id.toString() !== req.body._id.toString()
     );

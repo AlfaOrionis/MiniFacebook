@@ -5,6 +5,7 @@ import {
   FbSVG,
   GroupsSVG,
   HomeSVG,
+  LogOutSVG,
   MarketPlaceSVG,
   MessengerSVG,
   MoreSVG,
@@ -33,7 +34,7 @@ const HomeHeader: React.FC<{
   const [isLoading, setIsLoading] = useState(false);
   const [showNotif, setShowNotif] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-
+  console.log(user);
   console.log("HOME HEADER PRZELADOWANIE");
   const focusOnInput = () => {
     inputRef.current!.focus();
@@ -213,11 +214,12 @@ const HomeHeader: React.FC<{
             className={`${styles.SVGContainer} ${styles.notContainer}`}
           >
             <NotificationSVG />
-            {!user.data.notificationsChecked && (
-              <div className={styles.notContainer__number}>
-                {user.data.notifications.length}
-              </div>
-            )}
+            {!user.data.notificationsChecked &&
+              user.data.notifications.length > 0 && (
+                <div className={styles.notContainer__number}>
+                  {user.data.notifications.length}
+                </div>
+              )}
           </div>
           {showNotif && (
             <div className={styles.notList}>
@@ -280,22 +282,20 @@ const HomeHeader: React.FC<{
             <div className="backdrop" onClick={closeNotificationsHandler}></div>
           )}
         </div>
-        <button
+        <div
+          className={styles.SVGContainer}
           onClick={() => {
             dispatch(logOut());
             navigate("/");
           }}
         >
-          Logout
-        </button>
+          <LogOutSVG />
+        </div>
         <Link
           to={`profile/${user.data._id}/`}
           className={styles.profileContainer}
         >
-          <img
-            alt="Account"
-            src="https://i.wpimg.pl/O/1280x720/d.wpimg.pl/1292000565-1150296623/wiedzmin-wiedzmin-netflix.jpg"
-          />
+          <img alt="Account" src={user.data.profilePicture} />
         </Link>
       </div>
     </div>

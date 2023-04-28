@@ -2,7 +2,7 @@ import styles from "./profile.module.css";
 import axios, { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
 import { Route, Routes, useNavigate, useParams } from "react-router";
-import { User } from "../../types/types";
+import { User, friend } from "../../types/types";
 import { Spinner } from "../../utills/spinner";
 import {
   AddUserSVG,
@@ -17,6 +17,7 @@ import About from "./aboutRoute/about";
 import { useAppSelector } from "../../store";
 import { getTokenCookie } from "../../utills/tools";
 import Backdrop from "../../utills/backdrop";
+import AddPictureModal from "../../components/AddPictureModal";
 
 const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
   handleFocus,
@@ -26,6 +27,7 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
   const [isLoadingFriendReq, setIsLoadingFriendReq] = useState(false);
   const [showRespond, setShowRespond] = useState(false);
   const [showRemoveFriend, setShowRemoveFriend] = useState(false);
+  const [showPictureModal, setShowPictureModal] = useState(false);
 
   const navigate = useNavigate();
 
@@ -36,6 +38,19 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
   };
   const wasFriendRequestSend =
     user && user.friendsRequest.find((req) => req._id === mySelf.data._id);
+
+  // const getUserFriends = () => {
+  //   axios
+  //     .get("/api/users/userFriends", {
+  //       headers: { Authorization: `Bearer ${getTokenCookie()}` },
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   const friendHandler = () => {
     setIsLoadingFriendReq(true);
@@ -71,6 +86,7 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
         }
       )
       .then((res: AxiosResponse<{ friend: User; user: User }>) => {
+        setShowRespond(false);
         setUser(res.data.friend);
         console.log(res);
       })
@@ -92,7 +108,13 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
       )
       .catch((err) => console.log(err));
   };
+  const openPictureModal = () => {
+    setShowPictureModal(true);
+  };
 
+  const closePictureModal = () => {
+    setShowPictureModal(false);
+  };
   const openAddFriendHandler = () => {
     setShowRespond(true);
   };
@@ -123,10 +145,14 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
       });
   }, [params._id]);
   const isItMyFriend =
-    user && user.friends.find((id) => id === mySelf.data._id);
+    user &&
+    user.friends.find((friend: friend) => {
+      return friend._id === mySelf.data._id;
+    });
 
   const friendState = () => {
     if (!wasFriendRequestSend) {
+      console.log("XDDDDDDDDDDDDDDDDD");
       if (isItMyFriend) return "friend";
       return "emptyOrStarted";
     } else if (wasFriendRequestSend && !wasFriendRequestSend.started) {
@@ -138,6 +164,10 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
   if (user && !isLoadingProfile) {
     return (
       <div className={styles.profileContainer}>
+        <AddPictureModal
+          showPictureModal={showPictureModal}
+          closePictureModal={closePictureModal}
+        />
         <div className={styles.topContainer}>
           <div className={styles.backgroundContainer}>
             <img
@@ -148,7 +178,7 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
           </div>
           <div className={styles.avatarContainer}>
             <div className={styles.avatarContainer__leftContainer}>
-              <div className={styles.avatarIMG}>
+              <div onClick={openPictureModal} className={styles.avatarIMG}>
                 <img
                   src={
                     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
@@ -160,7 +190,21 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
                   {user.firstname} {user.lastname}
                 </p>
                 <span>{user.friends ? user.friends.length : 0} friends</span>
-                <div>adw awd awd awd a wda</div>
+                <div className={styles.friendsContainer}>
+                  {user.friends.length > 0 ? (
+                    <ul>
+                      {user.friends.slice(0, 7).map((fr: any) => (
+                        <li key={fr._id}>
+                          <Link to={"/profile/" + fr._id + "/"}>
+                            <img src={fr.profilePicture} />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    "XD"
+                  )}
+                </div>
               </div>
             </div>
             <div className={styles.avatarContainer__rightContainer}>
