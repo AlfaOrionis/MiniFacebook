@@ -31,10 +31,10 @@ router.get("/users", usersController.getUsers);
 router.get("/userFriends", auth(), usersController.getFriends);
 
 router.post(
-  "/uploadPicture",
+  "/addProfilePicture",
   auth(),
   formidableMiddleware(),
-  usersController.addPicture
+  usersController.addProfilePicture
 );
 
 module.exports = router;

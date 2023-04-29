@@ -13,7 +13,7 @@ interface initialData {
   _id?: string;
   notifications: [] | notification[];
   notificationsChecked: boolean;
-  profilePicture: string;
+  profilePicture: { url: string; public_id: string } | "";
 }
 export interface initialState {
   isAuth: boolean;
@@ -54,6 +54,12 @@ const authSlice = createSlice({
     },
     userNotifChecked(state, action: { payload: boolean }) {
       state.data.notificationsChecked = action.payload;
+    },
+    userProfilePicture(
+      state,
+      action: { payload: { url: string; public_id: string } | "" }
+    ) {
+      state.data.profilePicture = action.payload;
     },
   },
 });

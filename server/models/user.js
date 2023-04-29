@@ -119,10 +119,24 @@ const userSchema = mongoose.Schema({
     default: [],
   },
   profilePicture: {
-    type: String,
-    default:
-      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
-    required: true,
+    url: {
+      type: String,
+      default: "",
+    },
+    public_id: {
+      type: String,
+      default: "",
+    },
+  },
+  backgroundPicture: {
+    url: {
+      type: String,
+      default: "",
+    },
+    public_id: {
+      type: String,
+      default: "",
+    },
   },
   notifications: {
     type: [

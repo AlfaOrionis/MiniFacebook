@@ -295,7 +295,15 @@ const HomeHeader: React.FC<{
           to={`profile/${user.data._id}/`}
           className={styles.profileContainer}
         >
-          <img alt="Account" src={user.data.profilePicture} />
+          <div
+            className={styles.profileImg}
+            style={{
+              backgroundImage: `url(${
+                (user.data.profilePicture && user.data.profilePicture.url) ||
+                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+              })`,
+            }}
+          ></div>
         </Link>
       </div>
     </div>

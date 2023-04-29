@@ -85,11 +85,15 @@
 .bottomContainer__Photos {
   width: 100%;
 }
-.photosContainer {
+.photosContainer ul {
+  list-style: none;
+  padding: 0;
   width: 100%;
   display: flex;
   justify-content: flex-start;
   flex-wrap: wrap;
+  border-radius: 10px;
+  overflow: hidden;
 }
 .photosContainer__photo {
   width: 33.33%;

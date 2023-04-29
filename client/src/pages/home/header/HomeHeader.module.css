@@ -151,7 +151,9 @@
 .profileContainer {
   cursor: pointer;
 }
-.profileContainer img {
+.profileContainer div.profileImg {
+  background-position: center;
+  background-size: cover;
   width: 42px;
   height: 42px;
   border-radius: 50px;

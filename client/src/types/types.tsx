@@ -31,5 +31,6 @@ export interface User {
   photos?: [];
   notifications: notification[] | [];
   notificationsChecked: boolean;
-  profilePicture: string;
+  profilePicture: { url: string; public_id: string } | "";
+  backgroundPicture: { url: string; public_id: string } | "";
 }

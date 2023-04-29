@@ -22,7 +22,15 @@ const Posts: React.FC<{
   console.log(user);
 
   const photosContainer = document.getElementById("photosContainer");
-
+  const photos: string[] = [];
+  const getUserPhotos = () => {
+    if (user.profilePicture && user.profilePicture.url)
+      photos.push(user.profilePicture.url);
+    if (user.backgroundPicture && user.backgroundPicture.url)
+      photos.push(user.backgroundPicture.url);
+  };
+  getUserPhotos();
+  console.log(photos);
   return (
     <>
       <div className={styles.bottomContainer__left}>
@@ -66,62 +74,21 @@ const Posts: React.FC<{
           </div>
 
           <div id="photosContainer" className={styles.photosContainer}>
-            {photosContainer && user.photos && user.photos.length > 0 && (
-              <>
-                <div className={styles.photosContainer__photo}>
-                  <div
-                    style={{
-                      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
-                    }}
-                  />
-                </div>
-                <div className={styles.photosContainer__photo}>
-                  <div
-                    style={{
-                      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
-                    }}
-                  />
-                </div>
-
-                <div className={styles.photosContainer__photo}>
-                  <div
-                    style={{
-                      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
-                    }}
-                  />
-                </div>
-                <div className={styles.photosContainer__photo}>
-                  <div
-                    style={{
-                      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
-                    }}
-                  />
-                </div>
-                <div className={styles.photosContainer__photo}>
-                  <div
-                    style={{
-                      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
-                    }}
-                  />
-                </div>
-                <div className={styles.photosContainer__photo}>
-                  <div
-                    style={{
-                      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
-                    }}
-                  />
-                </div>
-                <div className={styles.photosContainer__photo}>
-                  <div
-                    style={{
-                      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
-                    }}
-                  />
-                </div>
-              </>
+            {photosContainer && photos.length > 0 && (
+              <ul>
+                {photos.map((url) => (
+                  <li key={url} className={styles.photosContainer__photo}>
+                    <div
+                      style={{
+                        height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
+                        backgroundImage: `url(${url})`,
+                      }}
+                    />
+                  </li>
+                ))}
+              </ul>
             )}
-            {!user.photos ||
-              (user.photos.length < 1 && <p>No photos added.</p>)}
+            {!user.photos || (photos.length < 1 && <p>No photos added.</p>)}
           </div>
         </div>
         <div className={`${styles.bottomContainer__Friends} card`}>Friends</div>
@@ -134,3 +101,13 @@ const Posts: React.FC<{
 };
 
 export default Posts;
+
+{
+  /* <div className={styles.photosContainer__photo}>
+  <div
+    style={{
+      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
+    }}
+  />
+</div>; */
+}

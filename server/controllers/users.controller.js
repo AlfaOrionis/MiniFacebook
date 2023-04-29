@@ -272,16 +272,40 @@ const usersController = {
     }
   },
 
-  async addPicture(req, res, next) {
+  async addProfilePicture(req, res, next) {
     try {
+      let type;
+      if (req.fields.type === "profile") type = "profilePicture";
+      if (req.fields.type === "background") type = "backgroundPicture";
+      if (req.user[type].url && req.user[type].public_id) {
+        await cloudinary.uploader
+          .destroy(req.user[type].public_id)
+          .then((res) => {
+            if (res.result === "not found")
+              throw new ApiError(
+                httpStatus.BAD_REQUEST,
+                "Picture could not be uploaded"
+              );
+          })
+          .catch((err) => {
+            throw new ApiError(
+              httpStatus.BAD_REQUEST,
+              err || "Something went wrong!"
+            );
+          });
+        req.user[type] = { url: "", public_id: "" };
+      }
+
+      const user = req.user;
       const upload = await cloudinary.uploader.upload(req.files.file.path, {
         public_id: `${Date.now()}`,
         folder: "minifacebook",
       });
-      res.json({
-        public_id: upload.public_id,
-        url: upload.url,
-      });
+
+      user[type] = { url: upload.url, public_id: upload.public_id };
+      await user.save();
+
+      res.json(user);
     } catch (err) {
       next(err);
     }

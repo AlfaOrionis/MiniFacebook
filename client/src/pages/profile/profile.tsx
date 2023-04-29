@@ -8,6 +8,7 @@ import {
   AddUserSVG,
   MessengerSVG,
   MoreSVG,
+  PhotoSVG,
   RespondFriendSVG,
 } from "../../utills/svg";
 import { Button } from "react-bootstrap";
@@ -27,11 +28,14 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
   const [isLoadingFriendReq, setIsLoadingFriendReq] = useState(false);
   const [showRespond, setShowRespond] = useState(false);
   const [showRemoveFriend, setShowRemoveFriend] = useState(false);
-  const [showPictureModal, setShowPictureModal] = useState(false);
+  const [showPictureModal, setShowPictureModal] = useState<
+    "profile" | "background" | ""
+  >("");
 
   const navigate = useNavigate();
 
   const mySelf = useAppSelector((state) => state.auth);
+  const isItMe = user?._id === mySelf.data._id;
 
   const setUserHandler = (data: User) => {
     setUser(data);
@@ -108,12 +112,12 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
       )
       .catch((err) => console.log(err));
   };
-  const openPictureModal = () => {
-    setShowPictureModal(true);
+  const openPictureModal = (type: "profile" | "background") => {
+    isItMe && setShowPictureModal(type);
   };
 
   const closePictureModal = () => {
-    setShowPictureModal(false);
+    setShowPictureModal("");
   };
   const openAddFriendHandler = () => {
     setShowRespond(true);
@@ -152,7 +156,6 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
 
   const friendState = () => {
     if (!wasFriendRequestSend) {
-      console.log("XDDDDDDDDDDDDDDDDD");
       if (isItMyFriend) return "friend";
       return "emptyOrStarted";
     } else if (wasFriendRequestSend && !wasFriendRequestSend.started) {
@@ -165,25 +168,52 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
     return (
       <div className={styles.profileContainer}>
         <AddPictureModal
+          setUserHandler={setUserHandler}
           showPictureModal={showPictureModal}
           closePictureModal={closePictureModal}
         />
         <div className={styles.topContainer}>
           <div className={styles.backgroundContainer}>
-            <img
-              src={
-                "https://motobanda.pl/uploads/motors/140/kawasaki-z800-18_nJQ57.jpg"
-              }
-            />
+            <div
+              onClick={() => openPictureModal("background")}
+              style={{
+                backgroundImage: `url(${
+                  (user.backgroundPicture && user.backgroundPicture.url) ||
+                  "https://motobanda.pl/uploads/motors/140/kawasaki-z800-18_nJQ57.jpg"
+                })`,
+                cursor: `${isItMe ? "pointer" : "auto"}`,
+              }}
+            >
+              <div
+                className={styles.backgroundContainer__imgCover}
+                style={!isItMe ? { display: "none" } : {}}
+              >
+                <PhotoSVG />
+              </div>
+            </div>
           </div>
           <div className={styles.avatarContainer}>
             <div className={styles.avatarContainer__leftContainer}>
-              <div onClick={openPictureModal} className={styles.avatarIMG}>
-                <img
-                  src={
-                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                  }
-                />
+              <div
+                onClick={() => openPictureModal("profile")}
+                className={styles.avatarIMG}
+                style={isItMe ? { cursor: "pointer" } : {}}
+              >
+                <div
+                  style={{
+                    backgroundImage: `url(${
+                      (user.profilePicture && user.profilePicture.url) ||
+                      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                    })`,
+                  }}
+                >
+                  <div
+                    className={styles.avatarIMG__cover}
+                    style={!isItMe ? { display: "none" } : {}}
+                  >
+                    <PhotoSVG />
+                  </div>
+                </div>
               </div>
               <div className={styles.nameContainer}>
                 <p>
@@ -202,7 +232,7 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
                       ))}
                     </ul>
                   ) : (
-                    "XD"
+                    "No friends"
                   )}
                 </div>
               </div>
