@@ -3,6 +3,7 @@ const { authService } = require("../services");
 const sendEmail = require("../services/email.service");
 const filterUser = require("../utills/filterUserResponse");
 const { ApiError } = require("../middleware/apiError");
+const { User } = require("../models/user");
 const authController = {
   async register(req, res, next) {
     try {
@@ -49,7 +50,15 @@ const authController = {
     }
   },
   async isauth(req, res, next) {
-    res.json(filterUser(req.user));
+    let user = await User.findById(req.user._id);
+    if (user.notifications.length > 0) {
+      user = await User.findById(req.user._id).populate({
+        path: "notifications._id",
+        select: "firstname lastname profilePicture",
+      });
+    }
+    console.log(user.notifications[0]._id);
+    res.json(filterUser(user));
   },
 };
 

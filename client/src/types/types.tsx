@@ -1,7 +1,12 @@
 export interface notification {
-  _id: string;
+  _id: {
+    _id: string;
+    firstname: string;
+    lastname: string;
+    profilePicture: { url: string; public_id: string };
+  };
   category: "request" | "newFriend";
-  friend: { name: string; img: string };
+  friend: { name: string; img: { url: string; public_id: string } };
   date: Date;
 }
 export interface friend {

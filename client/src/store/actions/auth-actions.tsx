@@ -116,7 +116,7 @@ export const isAuth = () => {
           headers: { Authorization: `Bearer ${getTokenCookie()}` },
         }
       );
-      console.log(response);
+
       dispatch(
         authActions.userAuthenticate({
           isAuth: true,

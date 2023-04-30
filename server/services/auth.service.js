@@ -16,7 +16,6 @@ const createUser = async (
     if (await User.emailTaken(email)) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Sorry email taken");
     }
-    console.log(birthday);
     const birthdayDate = new Date(birthday);
     const ageValid = isFifteen(birthdayDate);
     if (!ageValid)
@@ -34,7 +33,6 @@ const createUser = async (
       birthday,
       gender,
     });
-    console.log(user);
 
     await user.save();
     return user;
@@ -50,7 +48,10 @@ const genAuthToken = (user) => {
 
 const signInWithEmailAndPassword = async (email, password) => {
   try {
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email: email }).populate({
+      path: "notifications._id",
+      select: "firstname lastname profilePicture",
+    });
     if (!user || !(await user.comparePassword(password))) {
       throw new ApiError(httpStatus.UNAUTHORIZED, "Wrong email or password");
     }

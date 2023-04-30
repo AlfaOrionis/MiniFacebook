@@ -41,7 +41,6 @@ const userSchema = mongoose.Schema({
     type: Date,
     required: true,
     validate(value) {
-      console.log(value);
       if (!validator.isDate(value)) {
         throw new Error("Birthday must be type of Date");
       }
@@ -146,10 +145,6 @@ const userSchema = mongoose.Schema({
           type: String,
           enum: ["request", "newFriend"],
           required: true,
-        },
-        friend: {
-          name: { type: String, required: true },
-          img: { type: String, required: true },
         },
         date: {
           type: Date,

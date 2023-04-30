@@ -42,11 +42,9 @@ const usersController = {
   },
 
   async getUsers(req, res, next) {
-    console.log(req.query);
     let input = "";
     if (!req.query.input.includes(" ")) {
       input = new RegExp(req.query.input, "i");
-      console.log(input);
       try {
         const users = await User.find({
           $or: [{ firstname: input }, { lastname: input }],
@@ -74,7 +72,6 @@ const usersController = {
   },
   async updateWork(req, res, next) {
     try {
-      console.log(req.body);
       const user = await findUserByIdWithError(req.user._id);
 
       user.work = req.body.work;
@@ -211,14 +208,11 @@ const usersController = {
     try {
       const user = req.user;
       const friend = await User.findById(req.body._id);
-      console.log(req.body);
+
+      if (!friend) throw new ApiError(httpStatus.BAD_REQUEST, "User not found");
       user.notifications.push({
         _id: req.body._id,
         category: req.body.category,
-        friend: {
-          name: `${friend.firstname} ${friend.lastname}`,
-          img: friend.profilePicture,
-        },
       });
       user.notificationsChecked = false;
 

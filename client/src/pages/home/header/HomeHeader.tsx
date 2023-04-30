@@ -34,7 +34,7 @@ const HomeHeader: React.FC<{
   const [isLoading, setIsLoading] = useState(false);
   const [showNotif, setShowNotif] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  console.log(user);
+  console.log(user.data);
   console.log("HOME HEADER PRZELADOWANIE");
   const focusOnInput = () => {
     inputRef.current!.focus();
@@ -242,20 +242,33 @@ const HomeHeader: React.FC<{
                           return `${Math.floor(diffMinutes / 60)} hours ago`;
                         } else return `${diffMinutes} minutes ago`;
                       };
+                      console.log("AWDAWD");
+                      console.log("AWDAWD");
+                      console.log("AWDAWD");
+                      console.log("AWDAWD");
+                      console.log("AWDAWD");
+                      console.log(not);
                       return (
                         <li key={not.date.toString()}>
                           <div
                             onClick={() => {
-                              navigate(`/profile/${not._id}`);
+                              navigate(`/profile/${not._id._id}`);
                               setShowNotif(false);
                             }}
                           >
                             <div>
-                              <img src={not.friend.img} />
+                              <img
+                                src={
+                                  not._id.profilePicture.url ||
+                                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                                }
+                              />
                             </div>
                             <div>
                               <p>
-                                <span>{not.friend.name}</span>{" "}
+                                <span>
+                                  {not._id.firstname + " " + not._id.lastname}
+                                </span>{" "}
                                 {not.category === "newFriend"
                                   ? `accepted your
                               friend request.`
@@ -264,7 +277,9 @@ const HomeHeader: React.FC<{
                               <span>{theTime()}</span>
                             </div>
                           </div>
-                          <button onClick={() => removeNotification(not._id)}>
+                          <button
+                            onClick={() => removeNotification(not._id._id)}
+                          >
                             <CancelSVG />
                           </button>
                         </li>

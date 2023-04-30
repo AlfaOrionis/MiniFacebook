@@ -139,6 +139,12 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
       .get("/api/users/profile?_id=" + params._id)
       .then((res: AxiosResponse<User>) => {
         setUserHandler(res.data);
+        console.log("XDDD");
+        console.log("XDDD");
+        console.log("XDDD");
+        console.log("XDDD");
+        console.log("XDDD");
+        console.log(res.data);
         setIsLoadingProfile(false);
         handleFocus(false);
       })
@@ -178,8 +184,7 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
               onClick={() => openPictureModal("background")}
               style={{
                 backgroundImage: `url(${
-                  (user.backgroundPicture && user.backgroundPicture.url) ||
-                  "https://motobanda.pl/uploads/motors/140/kawasaki-z800-18_nJQ57.jpg"
+                  (user.backgroundPicture && user.backgroundPicture.url) || ""
                 })`,
                 cursor: `${isItMe ? "pointer" : "auto"}`,
               }}
