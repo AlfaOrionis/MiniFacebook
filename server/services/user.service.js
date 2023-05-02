@@ -13,7 +13,15 @@ const findUserById = async (_id) => {
   return await User.findById(_id);
 };
 const findUserByIdWithError = async (_id) => {
-  const user = await User.findById(_id);
+  const user = await User.findById(_id)
+    .populate({
+      path: "notifications._id",
+      select: "firstname lastname profilePicture",
+    })
+    .populate({
+      path: "friends._id",
+      select: "firstname lastname profilePicture",
+    });
   if (!user) throw new ApiError(httpStatus.BAD_REQUEST, "User not found");
   return user;
 };
@@ -80,8 +88,7 @@ const updatePassword = async (req) => {
 const sendFriendRequest = async (req) => {
   const user = req.user;
   try {
-    const friend = await User.findOne({ _id: req.body._id });
-    if (!friend) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    const friend = await findUserByIdWithError(req.body._id);
     for (const i in user.friendsRequest) {
       if (user.friendsRequest[i]._id.toString() === req.body._id) {
         //If this request already exists, it means the user wants to cancel it, so i will delete it
@@ -89,6 +96,15 @@ const sendFriendRequest = async (req) => {
         friend.friendsRequest = friend.friendsRequest.filter(
           (request) => request._id.toString() !== user._id.toString()
         );
+        // I will also delete the notifictaion
+        friend.notifications = friend.notifications.filter((notf) => {
+          if (
+            notf.category === "request" &&
+            notf._id._id.toString() === user._id.toString()
+          ) {
+            return false;
+          } else return true;
+        });
 
         await friend.save();
         await user.save();
@@ -103,6 +119,7 @@ const sendFriendRequest = async (req) => {
       _id: user._id,
       category: "request",
     });
+    if (friend.notifications.length > 20) friend.notifications.shift();
     friend.notificationsChecked = false;
 
     await friend.save();
@@ -117,14 +134,24 @@ const sendFriendRequest = async (req) => {
 const confirmFriendRequest = async (req) => {
   const user = req.user;
   try {
-    const friend = await User.findOne({ _id: req.body._id });
-    if (!friend) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    const friend = await findUserByIdWithError(req.body._id);
+    const friendFriendsCopy = [...friend.friends];
 
     friend.friendsRequest = friend.friendsRequest.filter(
       (request) => request._id.toString() !== user._id.toString()
     );
     friend.friends.push({
       _id: user._id,
+    });
+    friendFriendsCopy.push({
+      _id: {
+        _id: user._id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        profilePicture: {
+          url: user.profilePicture.url,
+        },
+      },
     });
 
     user.friendsRequest = user.friendsRequest.filter(
@@ -142,7 +169,8 @@ const confirmFriendRequest = async (req) => {
     await friend.save();
     await user.save();
 
-    return { user, friend };
+    const uploadedFriend = await findUserByIdWithError(req.body._id);
+    return { user, friend: uploadedFriend };
   } catch (err) {
     throw err;
   }
@@ -150,15 +178,15 @@ const confirmFriendRequest = async (req) => {
 
 const removeFriend = async (req) => {
   const user = req.user;
-  const friend = await User.findOne({ _id: req.body._id });
+  const friend = await findUserByIdWithError(req.body._id);
   if (!friend) throw new ApiError(httpStatus.NOT_FOUND, "User not found");
 
   try {
     user.friends = user.friends.filter(
-      (friend) => friend._id.toString() !== req.body._id.toString()
+      (friend) => friend._id._id.toString() !== req.body._id.toString()
     );
     friend.friends = friend.friends.filter(
-      (fr) => fr._id.toString() !== user._id.toString()
+      (fr) => fr._id._id.toString() !== user._id.toString()
     );
 
     await user.save();

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { User, notification } from "../../types/types";
+import { User, friend, notification } from "../../types/types";
 
 interface initialData {
   email: string;
@@ -8,7 +8,7 @@ interface initialData {
   birthday: string;
   gender: "male" | "female" | "";
   verified: boolean;
-  friends?: string[];
+  friends: [] | friend[];
   friendsRequest?: { started: boolean; _id: string }[] | [];
   _id?: string;
   notifications: [] | notification[];

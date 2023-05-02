@@ -139,12 +139,7 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
       .get("/api/users/profile?_id=" + params._id)
       .then((res: AxiosResponse<User>) => {
         setUserHandler(res.data);
-        console.log("XDDD");
-        console.log("XDDD");
-        console.log("XDDD");
-        console.log("XDDD");
-        console.log("XDDD");
-        console.log(res.data);
+
         setIsLoadingProfile(false);
         handleFocus(false);
       })
@@ -157,7 +152,7 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
   const isItMyFriend =
     user &&
     user.friends.find((friend: friend) => {
-      return friend._id === mySelf.data._id;
+      return friend._id._id === mySelf.data._id;
     });
 
   const friendState = () => {
@@ -228,10 +223,15 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
                 <div className={styles.friendsContainer}>
                   {user.friends.length > 0 ? (
                     <ul>
-                      {user.friends.slice(0, 7).map((fr: any) => (
-                        <li key={fr._id}>
-                          <Link to={"/profile/" + fr._id + "/"}>
-                            <img src={fr.profilePicture} />
+                      {user.friends.slice(0, 7).map((fr) => (
+                        <li key={fr._id._id}>
+                          <Link to={"/profile/" + fr._id._id + "/"}>
+                            <img
+                              src={
+                                fr._id.profilePicture.url ||
+                                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                              }
+                            />
                           </Link>
                         </li>
                       ))}

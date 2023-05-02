@@ -50,15 +50,7 @@ const authController = {
     }
   },
   async isauth(req, res, next) {
-    let user = await User.findById(req.user._id);
-    if (user.notifications.length > 0) {
-      user = await User.findById(req.user._id).populate({
-        path: "notifications._id",
-        select: "firstname lastname profilePicture",
-      });
-    }
-    console.log(user.notifications[0]._id);
-    res.json(filterUser(user));
+    res.json(filterUser(req.user));
   },
 };
 

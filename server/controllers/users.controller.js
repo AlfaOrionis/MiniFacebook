@@ -20,11 +20,8 @@ const usersController = {
   async getProfile(req, res, next) {
     try {
       const user = await User.findById(req.query._id).populate({
-        path: "friends",
+        path: "friends._id",
         select: "firstname lastname profilePicture",
-        options: {
-          limit: 8,
-        },
       });
       if (!user) {
         throw new ApiError(httpStatus.NOT_FOUND, "User not found");
@@ -215,7 +212,7 @@ const usersController = {
         category: req.body.category,
       });
       user.notificationsChecked = false;
-
+      if (user.notifications.length >= 20) user.notifications.shift();
       await user.save();
 
       res.status(httpStatus.CREATED).send(user);
@@ -227,9 +224,9 @@ const usersController = {
     try {
       const user = req.user;
 
-      user.notifications = user.notifications.filter(
-        (not) => not._id.toString() !== req.body._id
-      );
+      user.notifications = user.notifications.filter((not) => {
+        return new Date(not.date).toISOString() !== req.body.date;
+      });
 
       await user.save();
       res.status(httpStatus.CREATED).send(user);

@@ -12,6 +12,7 @@ const AddPictureModal: React.FC<{
   closePictureModal: () => void;
 }> = ({ closePictureModal, showPictureModal, setUserHandler }) => {
   const [inputValue, setInputValue] = useState<any>("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const dispatch = useAppDispatch();
   const submitHandler = () => {

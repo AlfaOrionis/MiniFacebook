@@ -87,12 +87,13 @@ const HomeHeader: React.FC<{
     setIsLoading(false);
   };
 
-  const removeNotification = (_id: string) => {
+  const removeNotification = (date: Date) => {
+    console.log(date);
     axios
       .patch(
         "/api/users/removeNotification",
         {
-          _id,
+          date,
         },
         {
           headers: { Authorization: `Bearer ${getTokenCookie()}` },
@@ -242,12 +243,7 @@ const HomeHeader: React.FC<{
                           return `${Math.floor(diffMinutes / 60)} hours ago`;
                         } else return `${diffMinutes} minutes ago`;
                       };
-                      console.log("AWDAWD");
-                      console.log("AWDAWD");
-                      console.log("AWDAWD");
-                      console.log("AWDAWD");
-                      console.log("AWDAWD");
-                      console.log(not);
+
                       return (
                         <li key={not.date.toString()}>
                           <div
@@ -277,9 +273,7 @@ const HomeHeader: React.FC<{
                               <span>{theTime()}</span>
                             </div>
                           </div>
-                          <button
-                            onClick={() => removeNotification(not._id._id)}
-                          >
+                          <button onClick={() => removeNotification(not.date)}>
                             <CancelSVG />
                           </button>
                         </li>
