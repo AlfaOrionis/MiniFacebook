@@ -26,6 +26,7 @@
   background-color: rgb(201, 201, 201);
   color: black;
 }
+
 .infoDiv {
   display: flex;
   align-items: center;
@@ -99,13 +100,54 @@
   width: 33.33%;
   padding: 2px;
 }
-.photosContainer__photo > div {
-  background-image: url("https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/types-of-motorcycles-refresh-lead-1677534605.jpeg?crop=0.566xw:1.00xh;0.147xw,0&resize=1200:*");
+.bottomContainer__Friends {
+  padding: 20px 7px 10px;
+}
+.bottomContainer__Friends h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+.bottomContainer__titleContainer {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5px;
+  margin-bottom: 10px;
+}
+.bottomContainer__titleContainer div span {
+  color: rgb(101, 101, 101);
+}
+.photosContainer__photo > div,
+.friendsContainer__friend div > div {
   background-position: center center;
   background-size: cover;
   width: 100%;
 }
+.friendsContainer {
+  display: flex;
+  padding: 0;
+  flex-wrap: wrap;
+}
 
+.friendsContainer__friend {
+  width: 33.33%;
+  margin-bottom: 30px;
+  padding: 5px;
+}
+.friendsContainer h2 {
+  color: red;
+}
+.friendsContainer__friend p {
+  color: black;
+  font-family: Roboto;
+  font-weight: 500;
+  font-size: 13px;
+  margin-top: 6px;
+  padding-left: 2px;
+}
+.friendsContainer__friend div div {
+  border-radius: 8px;
+}
 @media (max-width: 900px) {
   .bottomContainer__right {
     width: 100%;

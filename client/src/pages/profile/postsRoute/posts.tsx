@@ -30,7 +30,6 @@ const Posts: React.FC<{
       photos.push(user.backgroundPicture.url);
   };
   getUserPhotos();
-  console.log(photos);
   return (
     <>
       <div className={styles.bottomContainer__left}>
@@ -91,7 +90,43 @@ const Posts: React.FC<{
             {!user.photos || (photos.length < 1 && <p>No photos added.</p>)}
           </div>
         </div>
-        <div className={`${styles.bottomContainer__Friends} card`}>Friends</div>
+        <div className={`${styles.bottomContainer__Friends} card`}>
+          <div className={styles.bottomContainer__titleContainer}>
+            <div>
+              <h2>Friends</h2>
+              <span>{user.friends.length} friends</span>
+            </div>
+            <Link to={"/profile/" + user._id + "/friends"}>
+              See all friends
+            </Link>
+          </div>
+          <ul className={styles.friendsContainer}>
+            {photosContainer &&
+              user.friends.length > 0 &&
+              user.friends.map((fr) => (
+                <div className={styles.friendsContainer__friend}>
+                  <Link to={"/profile/" + fr._id._id + "/"}>
+                    <div
+                      style={{
+                        height: `${photosContainer!.clientWidth * 0.33 - 7}px`,
+                      }}
+                    >
+                      <div
+                        style={{
+                          height: "100%",
+                          backgroundImage: `url(${
+                            fr._id.profilePicture.url ||
+                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                          })`,
+                        }}
+                      />
+                      <p>{`${fr._id.firstname} ${fr._id.lastname}`}</p>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+          </ul>
+        </div>
       </div>
       <div className={styles.bottomContainer__right}>
         <div className="card">Posts</div>
@@ -101,13 +136,3 @@ const Posts: React.FC<{
 };
 
 export default Posts;
-
-{
-  /* <div className={styles.photosContainer__photo}>
-  <div
-    style={{
-      height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
-    }}
-  />
-</div>; */
-}
