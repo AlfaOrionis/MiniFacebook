@@ -24,6 +24,7 @@ const AddPictureModal: React.FC<{
     const allowedExtensions = ["jpg", "jpeg", "png"];
     if (!allowedExtensions.includes(fileExtension)) {
       alert("Please select a valid image file.");
+      setIsLoading(false);
       return false;
     }
 
