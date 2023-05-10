@@ -5,6 +5,7 @@ import { getTokenCookie } from "../utills/tools";
 import { User } from "../types/types";
 import { useAppDispatch } from "../store";
 import { authActions } from "../store/slices/auth-slice";
+import Waiter from "../utills/waiter";
 
 const AddPictureModal: React.FC<{
   showPictureModal: "" | "profile" | "background";
@@ -17,6 +18,7 @@ const AddPictureModal: React.FC<{
   const dispatch = useAppDispatch();
   const submitHandler = () => {
     if (!inputValue) return false;
+    setIsLoading(true);
     // Get file extension
     const fileExtension = inputValue.name.split(".").pop().toLowerCase();
     const allowedExtensions = ["jpg", "jpeg", "png"];
@@ -42,9 +44,13 @@ const AddPictureModal: React.FC<{
         console.log(res);
         dispatch(authActions.userProfilePicture(res.data.profilePicture));
         setUserHandler(res.data);
+        setIsLoading(false);
         closePictureModal();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   };
 
   return (
@@ -56,7 +62,7 @@ const AddPictureModal: React.FC<{
       }}
     >
       <Modal.Header closeButton>
-        <Modal.Title>Add picture</Modal.Title>
+        <Modal.Title>Add picture </Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form.Group controlId="formFile" className="mb-3">
@@ -79,10 +85,11 @@ const AddPictureModal: React.FC<{
         >
           Close
         </Button>
-        <Button variant="primary" onClick={submitHandler}>
+        <Button disabled={isLoading} variant="primary" onClick={submitHandler}>
           Save Changes
         </Button>
       </Modal.Footer>
+      {isLoading && <Waiter />}
     </Modal>
   );
 };

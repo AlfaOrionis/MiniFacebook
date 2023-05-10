@@ -3,7 +3,7 @@ import classes from "../profile.module.css";
 import { Button } from "react-bootstrap";
 import { User } from "../../../types/types";
 import { profileInfos } from "../../../utills/data";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditBio from "./editBio";
 import { useAppSelector } from "../../../store";
 import { Link } from "react-router-dom";
@@ -15,13 +15,17 @@ const Posts: React.FC<{
   const mySelf = useAppSelector((state) => state.auth);
   console.log(mySelf.data._id);
   const [isEditing, setIsEditing] = useState(false);
-
+  const [width, setWidth] = useState(0);
   const showEditHandler = (bol: boolean) => {
     setIsEditing(bol);
   };
   console.log(user);
 
-  const photosContainer = document.getElementById("photosContainer");
+  useEffect(() => {
+    const photosContainer = document.getElementById("photosContainer");
+    setWidth(photosContainer?.clientWidth || 0);
+  }, []);
+
   const photos: string[] = [];
   const getUserPhotos = () => {
     if (user.profilePicture && user.profilePicture.url)
@@ -73,13 +77,13 @@ const Posts: React.FC<{
           </div>
 
           <div id="photosContainer" className={styles.photosContainer}>
-            {photosContainer && photos.length > 0 && (
+            {photos.length > 0 && (
               <ul>
                 {photos.map((url) => (
                   <li key={url} className={styles.photosContainer__photo}>
                     <div
                       style={{
-                        height: `${photosContainer!.clientWidth * 0.33 - 4}px`,
+                        height: `${width * 0.33 - 4}px`,
                         backgroundImage: `url(${url})`,
                       }}
                     />
@@ -101,14 +105,13 @@ const Posts: React.FC<{
             </Link>
           </div>
           <ul className={styles.friendsContainer}>
-            {photosContainer &&
-              user.friends.length > 0 &&
+            {user.friends.length > 0 &&
               user.friends.map((fr) => (
                 <div className={styles.friendsContainer__friend}>
                   <Link to={"/profile/" + fr._id._id + "/"}>
                     <div
                       style={{
-                        height: `${photosContainer!.clientWidth * 0.33 - 7}px`,
+                        height: `${width * 0.33 - 7}px`,
                       }}
                     >
                       <div
