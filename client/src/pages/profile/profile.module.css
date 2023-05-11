@@ -330,4 +330,10 @@ button.addFriendBtn {
   .respondBtnContainer__div {
     width: 100%;
   }
+  .navContainer ul li a {
+    font-size: 14px;
+  }
+  .navContainer ul li {
+    width: 50px;
+  }
 }
