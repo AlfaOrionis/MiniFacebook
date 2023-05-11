@@ -243,6 +243,10 @@ button.addFriendBtn {
   .avatarContainer__leftContainer {
     flex-direction: column;
     margin-bottom: 15px;
+    align-items: center;
+  }
+  .nameContainer {
+    align-items: center;
   }
 }
 
