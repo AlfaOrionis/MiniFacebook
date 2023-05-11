@@ -148,7 +148,7 @@ const About: React.FC<{
                     </div>
                   </div>
                 )}
-                {isEditing !== data.type && (
+                {isEditing !== data.type && user._id === mySelf.data._id && (
                   <button
                     onClick={() => {
                       setIsEditingHandler(data.type);
