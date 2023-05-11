@@ -136,6 +136,7 @@ const Profile: React.FC<{ handleFocus: (val: boolean) => void }> = ({
 
   useEffect(() => {
     document.documentElement.scrollTo(0, 0);
+    console.log(params._id);
     axios
       .get("/api/users/profile?_id=" + params._id)
       .then((res: AxiosResponse<User>) => {

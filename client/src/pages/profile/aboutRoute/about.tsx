@@ -41,6 +41,7 @@ const About: React.FC<{
       .then((res) => {
         setIsEditingHandler("");
         setUserHandler(res.data);
+        setInputValue("");
       })
       .catch((err) => {
         console.log(err);
